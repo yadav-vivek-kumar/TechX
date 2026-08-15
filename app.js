@@ -20,7 +20,7 @@ const pages={
 };
 
 const route=()=>location.hash.slice(1)||'/';
-const state={cart:JSON.parse(localStorage.getItem('tx-cart')||'[]'),wish:JSON.parse(localStorage.getItem('tx-wish')||'[]'),seen:new Set([route()]),maxScroll:0,purchased:false,purchaseAmount:0,productsPurchased:'',totalQuantity:0};
+const state={cart:JSON.parse(localStorage.getItem('tx-cart')||'[]'),wish:JSON.parse(localStorage.getItem('tx-wish')||'[]'),seen:new Set([route()]),maxScroll:0,purchased:false,purchaseAmount:0};
 const visitor=localStorage.getItem('tx-visitor')||crypto.randomUUID();const returning=!!localStorage.getItem('tx-visitor');localStorage.setItem('tx-visitor',visitor);const started=Date.now();const sessionId=crypto.randomUUID();
 const count=()=>state.cart.length;
 
@@ -41,31 +41,14 @@ function info(path){
 function page(){const path=pages[route()]?route():'/';state.seen.add(path);const d=pages[path];document.title=`TechX - ${d[0]}`;const listing=['/shop','/categories','/deals','/new-arrivals','/audio','/computers','/mobiles','/wearables','/cameras','/smart-home','/accessories'].includes(path);document.querySelector('#app').innerHTML=`${nav()}<main><section class="hero"><div class="orb"></div><p class="eyebrow">${path==='/'?'THE TECHX EDIT':d[0]}</p><h1>${d[1]}</h1><p class="sub">${d[2]}</p>${path==='/'?'<a class="button" href="/shop">Shop the collection</a>':''}<div class="hero-number">01 - 24</div></section>${listing||path==='/'?cards():info(path)}<section class="promise"><p>TECHX STANDARD</p><h2>Better tech begins<br>with better choices.</h2><div><span>01</span> Considered selection <span>02</span> Human support <span>03</span> Made to last</div></section></main><footer><a class="brand" href="/">TECH<span>X</span></a><div><a href="/contact">Contact</a><a href="/support">Support</a><a href="/track-order">Track order</a><a href="/wishlist">Wishlist</a></div><p>2026 TechX. Better everyday.</p></footer>`;scrollTo({top:0,behavior:'instant'})}
 function go(x){location.hash=x}function save(){localStorage.setItem('tx-cart',JSON.stringify(state.cart));localStorage.setItem('tx-wish',JSON.stringify(state.wish))}function add(i){state.cart.push(i);save();page()}function changeQty(i,n){if(n>0)state.cart.push(i);else state.cart.splice(state.cart.indexOf(i),1);save();page()}function removeItem(i){state.cart=state.cart.filter(x=>x!==i);save();page()}function toggleWish(i){state.wish.includes(i)?state.wish=state.wish.filter(x=>x!==i):state.wish.push(i);save();page()}
 
-let purchaseMade = false;
-
 function purchase(){
-  const counts = state.cart.reduce((acc, id) => {
-    acc[id] = (acc[id] || 0) + 1;
-    return acc;
-  }, {});
-  
-  state.productsPurchased = Object.entries(counts)
-    .map(([id, qty]) => `${products[id][0]} (${qty})`)
-    .join(', ');
-  state.totalQuantity = state.cart.length;
   state.purchaseAmount = getCartTotal();
   state.purchased = true;
-  purchaseMade = true;
-
   sendAnalytics(true);
-
   state.cart = [];
   state.purchased = false;
   state.purchaseAmount = 0;
-  state.productsPurchased = '';
-  state.totalQuantity = 0;
   save();
-
   alert('Order confirmed. Thank you for choosing TechX!');
   page();
 }
@@ -88,9 +71,7 @@ function sendAnalytics(force=false){
     scroll: state.maxScroll,
     purchased: state.purchased,
     purchaseAmount: state.purchaseAmount,
-    returning: returning,
-    productsPurchased: state.productsPurchased,
-    totalQuantity: state.totalQuantity
+    returning: returning
   };
 
   fetch(ANALYTICS_URL, {
@@ -101,17 +82,9 @@ function sendAnalytics(force=false){
   });
 }
 
-// Exit logger: sends stats ONLY if the visitor did not complete a purchase
-let exitLogged = false;
-function logExitSession() {
-  if (purchaseMade || exitLogged) return;
-  exitLogged = true;
-  sendAnalytics(false);
-}
-
-addEventListener('pagehide', logExitSession);
+addEventListener('pagehide', () => sendAnalytics(false));
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') logExitSession();
+  if (document.visibilityState === 'hidden') sendAnalytics(false);
 });
 
 page();
