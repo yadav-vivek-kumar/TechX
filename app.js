@@ -44,9 +44,11 @@ function go(x){location.hash=x}function save(){localStorage.setItem('tx-cart',JS
 function purchase(){
   state.purchaseAmount = getCartTotal();
   state.purchased = true;
-  state.cart = [];
-  save();
   sendAnalytics(true);
+  state.cart = [];
+  state.purchased = false;
+  state.purchaseAmount = 0;
+  save();
   alert('Order confirmed. Thank you for choosing TechX!');
   page();
 }
@@ -55,11 +57,7 @@ function login(e){e.preventDefault();localStorage.setItem('tx-user',document.que
 Object.assign(window,{go,add,changeQty,removeItem,toggleWish,purchase,login,logout});
 document.addEventListener('click',e=>{const a=e.target.closest('a[href^="/"]');if(a){e.preventDefault();go(a.getAttribute('href'))}});addEventListener('hashchange',page);addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;state.maxScroll=Math.max(state.maxScroll,h?Math.round(scrollY/h*100):100)});
 
-let sent=false;
 function sendAnalytics(force=false){
-  if(sent && !force) return;
-  sent = true;
-
   const pad = n => String(n).padStart(2, '0');
   const now = new Date();
   const formattedDate = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}, ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
@@ -76,8 +74,6 @@ function sendAnalytics(force=false){
     returning: returning
   };
 
-  localStorage.setItem('tx-last-session', JSON.stringify(data));
-
   fetch(ANALYTICS_URL, {
     method: 'POST',
     mode: 'no-cors',
@@ -86,9 +82,9 @@ function sendAnalytics(force=false){
   });
 }
 
-addEventListener('pagehide', sendAnalytics);
+addEventListener('pagehide', () => sendAnalytics(false));
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') sendAnalytics();
+  if (document.visibilityState === 'hidden') sendAnalytics(false);
 });
 
 page();
