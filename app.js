@@ -7,7 +7,7 @@ const products = [
   ['Halo Smart Home','Smart Home','₹12,990','https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=900&q=85']
 ];
 // Replace this with the Web App URL that Google Apps Script gives you.
-const ANALYTICS_URL = 'https://script.google.com/macros/s/AKfycbxIHba1THf0bSE0c-RjdEgCL1ZE1IKF8rvqDYBixoHwi3a7W6T0zscBsTibgjWroBwE2g/exec';
+const ANALYTICS_URL = 'https://script.google.com/macros/s/AKfycbxRIOZ99bnbzj0Dh_NQwG7U4hXtAMn97gkyM10u5M6KuW0mJMMWgOF8DjkWi7ho6-KJGw/exec';
 const pages = {
   '/':['Home','Technology,<br>made human.','The devices you want. The guidance you deserve. Welcome to TechX.'],
   '/shop':['Shop','The future is<br>in your hands.','Explore curated technology built for the way you live.'],
