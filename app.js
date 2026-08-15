@@ -26,15 +26,6 @@ const count=()=>state.cart.length;
 
 const getCartTotal=()=>state.cart.reduce((sum,id)=>sum+Number(products[id][2].replace(/[^0-9]/g,'')),0);
 
-const getCartDetails=()=>{
-  const counts = state.cart.reduce((acc, id) => {
-    acc[id] = (acc[id] || 0) + 1;
-    return acc;
-  }, {});
-  const names = Object.entries(counts).map(([id, qty]) => `${products[id][0]} (${qty})`).join(', ');
-  return { names, totalQty: state.cart.length };
-};
-
 function nav(){const user=localStorage.getItem('tx-user');return `<header><a class="brand" href="/">TECH<span>X</span></a><nav><a href="/shop">Shop</a><a href="/new-arrivals">New arrivals</a><a href="/deals">Offers</a><a href="/about">Our story</a></nav><div class="nav-right"><button class="login" onclick="go('${user?'/account':'/login'}')">${user?'Account':'Log in'}</button><button class="bag" onclick="go('/checkout')">Bag <b>${count()}</b></button></div></header>`}
 function cards(){return `<section class="products"><div class="section-top"><p class="eyebrow">CURATED FOR YOU</p><h2>Worth a closer look.</h2><a href="/shop">All products</a></div><div class="grid">${products.map((p,i)=>`<article class="product"><div class="product-art"><img src="${p[3]}" alt="${p[0]}"><span>${i%3?'NEW':'TECHX PICK'}</span></div><p class="category">${p[1]}</p><h3>${p[0]}</h3><p>${p[2]}</p><div class="product-actions"><button onclick="add(${i})">Add to bag +</button><button class="heart" onclick="toggleWish(${i})">${state.wish.includes(i)?'Saved':'Save'}</button></div></article>`).join('')}</div></section>`}
 function lineItems(){const grouped=state.cart.reduce((a,i)=>(a[i]=(a[i]||0)+1,a),{});return Object.entries(grouped).map(([id,qty])=>`<div class="cart-line"><img src="${products[id][3]}" alt=""><div><strong>${products[id][0]}</strong><small>${products[id][2]}</small></div><div class="qty"><button onclick="changeQty(${id},-1)">-</button><b>${qty}</b><button onclick="changeQty(${id},1)">+</button></div><button class="remove" onclick="removeItem(${id})">Remove</button></div>`).join('')}
@@ -50,22 +41,31 @@ function info(path){
 function page(){const path=pages[route()]?route():'/';state.seen.add(path);const d=pages[path];document.title=`TechX - ${d[0]}`;const listing=['/shop','/categories','/deals','/new-arrivals','/audio','/computers','/mobiles','/wearables','/cameras','/smart-home','/accessories'].includes(path);document.querySelector('#app').innerHTML=`${nav()}<main><section class="hero"><div class="orb"></div><p class="eyebrow">${path==='/'?'THE TECHX EDIT':d[0]}</p><h1>${d[1]}</h1><p class="sub">${d[2]}</p>${path==='/'?'<a class="button" href="/shop">Shop the collection</a>':''}<div class="hero-number">01 - 24</div></section>${listing||path==='/'?cards():info(path)}<section class="promise"><p>TECHX STANDARD</p><h2>Better tech begins<br>with better choices.</h2><div><span>01</span> Considered selection <span>02</span> Human support <span>03</span> Made to last</div></section></main><footer><a class="brand" href="/">TECH<span>X</span></a><div><a href="/contact">Contact</a><a href="/support">Support</a><a href="/track-order">Track order</a><a href="/wishlist">Wishlist</a></div><p>2026 TechX. Better everyday.</p></footer>`;scrollTo({top:0,behavior:'instant'})}
 function go(x){location.hash=x}function save(){localStorage.setItem('tx-cart',JSON.stringify(state.cart));localStorage.setItem('tx-wish',JSON.stringify(state.wish))}function add(i){state.cart.push(i);save();page()}function changeQty(i,n){if(n>0)state.cart.push(i);else state.cart.splice(state.cart.indexOf(i),1);save();page()}function removeItem(i){state.cart=state.cart.filter(x=>x!==i);save();page()}function toggleWish(i){state.wish.includes(i)?state.wish=state.wish.filter(x=>x!==i):state.wish.push(i);save();page()}
 
+let purchaseMade = false;
+
 function purchase(){
-  const cartInfo = getCartDetails();
+  const counts = state.cart.reduce((acc, id) => {
+    acc[id] = (acc[id] || 0) + 1;
+    return acc;
+  }, {});
+  
+  state.productsPurchased = Object.entries(counts)
+    .map(([id, qty]) => `${products[id][0]} (${qty})`)
+    .join(', ');
+  state.totalQuantity = state.cart.length;
   state.purchaseAmount = getCartTotal();
-  state.productsPurchased = cartInfo.names;
-  state.totalQuantity = cartInfo.totalQty;
   state.purchased = true;
-  
+  purchaseMade = true;
+
   sendAnalytics(true);
-  
+
   state.cart = [];
   state.purchased = false;
   state.purchaseAmount = 0;
   state.productsPurchased = '';
   state.totalQuantity = 0;
   save();
-  
+
   alert('Order confirmed. Thank you for choosing TechX!');
   page();
 }
@@ -101,9 +101,17 @@ function sendAnalytics(force=false){
   });
 }
 
-addEventListener('pagehide', () => sendAnalytics(false));
+// Exit logger: sends stats ONLY if the visitor did not complete a purchase
+let exitLogged = false;
+function logExitSession() {
+  if (purchaseMade || exitLogged) return;
+  exitLogged = true;
+  sendAnalytics(false);
+}
+
+addEventListener('pagehide', logExitSession);
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') sendAnalytics(false);
+  if (document.visibilityState === 'hidden') logExitSession();
 });
 
 page();
