@@ -20,11 +20,20 @@ const pages={
 };
 
 const route=()=>location.hash.slice(1)||'/';
-const state={cart:JSON.parse(localStorage.getItem('tx-cart')||'[]'),wish:JSON.parse(localStorage.getItem('tx-wish')||'[]'),seen:new Set([route()]),maxScroll:0,purchased:false,purchaseAmount:0};
+const state={cart:JSON.parse(localStorage.getItem('tx-cart')||'[]'),wish:JSON.parse(localStorage.getItem('tx-wish')||'[]'),seen:new Set([route()]),maxScroll:0,purchased:false,purchaseAmount:0,productsPurchased:'',totalQuantity:0};
 const visitor=localStorage.getItem('tx-visitor')||crypto.randomUUID();const returning=!!localStorage.getItem('tx-visitor');localStorage.setItem('tx-visitor',visitor);const started=Date.now();const sessionId=crypto.randomUUID();
 const count=()=>state.cart.length;
 
 const getCartTotal=()=>state.cart.reduce((sum,id)=>sum+Number(products[id][2].replace(/[^0-9]/g,'')),0);
+
+const getCartDetails=()=>{
+  const counts = state.cart.reduce((acc, id) => {
+    acc[id] = (acc[id] || 0) + 1;
+    return acc;
+  }, {});
+  const names = Object.entries(counts).map(([id, qty]) => `${products[id][0]} (${qty})`).join(', ');
+  return { names, totalQty: state.cart.length };
+};
 
 function nav(){const user=localStorage.getItem('tx-user');return `<header><a class="brand" href="/">TECH<span>X</span></a><nav><a href="/shop">Shop</a><a href="/new-arrivals">New arrivals</a><a href="/deals">Offers</a><a href="/about">Our story</a></nav><div class="nav-right"><button class="login" onclick="go('${user?'/account':'/login'}')">${user?'Account':'Log in'}</button><button class="bag" onclick="go('/checkout')">Bag <b>${count()}</b></button></div></header>`}
 function cards(){return `<section class="products"><div class="section-top"><p class="eyebrow">CURATED FOR YOU</p><h2>Worth a closer look.</h2><a href="/shop">All products</a></div><div class="grid">${products.map((p,i)=>`<article class="product"><div class="product-art"><img src="${p[3]}" alt="${p[0]}"><span>${i%3?'NEW':'TECHX PICK'}</span></div><p class="category">${p[1]}</p><h3>${p[0]}</h3><p>${p[2]}</p><div class="product-actions"><button onclick="add(${i})">Add to bag +</button><button class="heart" onclick="toggleWish(${i})">${state.wish.includes(i)?'Saved':'Save'}</button></div></article>`).join('')}</div></section>`}
@@ -42,13 +51,21 @@ function page(){const path=pages[route()]?route():'/';state.seen.add(path);const
 function go(x){location.hash=x}function save(){localStorage.setItem('tx-cart',JSON.stringify(state.cart));localStorage.setItem('tx-wish',JSON.stringify(state.wish))}function add(i){state.cart.push(i);save();page()}function changeQty(i,n){if(n>0)state.cart.push(i);else state.cart.splice(state.cart.indexOf(i),1);save();page()}function removeItem(i){state.cart=state.cart.filter(x=>x!==i);save();page()}function toggleWish(i){state.wish.includes(i)?state.wish=state.wish.filter(x=>x!==i):state.wish.push(i);save();page()}
 
 function purchase(){
+  const cartInfo = getCartDetails();
   state.purchaseAmount = getCartTotal();
+  state.productsPurchased = cartInfo.names;
+  state.totalQuantity = cartInfo.totalQty;
   state.purchased = true;
+  
   sendAnalytics(true);
+  
   state.cart = [];
   state.purchased = false;
   state.purchaseAmount = 0;
+  state.productsPurchased = '';
+  state.totalQuantity = 0;
   save();
+  
   alert('Order confirmed. Thank you for choosing TechX!');
   page();
 }
@@ -71,7 +88,9 @@ function sendAnalytics(force=false){
     scroll: state.maxScroll,
     purchased: state.purchased,
     purchaseAmount: state.purchaseAmount,
-    returning: returning
+    returning: returning,
+    productsPurchased: state.productsPurchased,
+    totalQuantity: state.totalQuantity
   };
 
   fetch(ANALYTICS_URL, {
