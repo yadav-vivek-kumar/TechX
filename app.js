@@ -78,7 +78,9 @@ function nav() {
   const user = localStorage.getItem('tx-user');
   return `
     <header>
-      <a class="brand" href="/">TECH<span>X</span></a>
+      <a class="brand" href="/">
+        <img src="logo.png" alt="TechX" class="brand-logo">
+      </a>
       <nav>
         <a href="/shop">Shop</a>
         <a href="/new-arrivals">New Arrivals</a>
@@ -250,7 +252,9 @@ function page() {
       </section>
     </main>
     <footer>
-      <a class="brand" href="/">TECH<span>X</span></a>
+      <a class="brand" href="/">
+        <img src="logo.png" alt="TechX" class="brand-logo footer-logo">
+      </a>
       <div>
         <a href="/contact">Contact</a>
         <a href="/support">Support</a>
@@ -357,7 +361,7 @@ function sendAnalytics(force = false) {
     timestamp: formattedDate,
     sessionId: sessionId,
     visitorId: visitor,
-    duration: Math.round((Date.now() - started) / 1000),
+    duration: Math.max(Math.round((Date.now() - started) / 1000), 1),
     pages: state.seen.size,
     scroll: state.maxScroll,
     purchased: state.purchased,
