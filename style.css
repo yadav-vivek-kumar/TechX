@@ -53,13 +53,28 @@ header {
 }
 
 .brand {
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -1.5px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
 
-.brand span {
-  color: var(--orange);
+.brand-logo {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.brand-logo:hover {
+  transform: scale(1.04);
+}
+
+.footer-logo {
+  height: 24px;
+  background: var(--cream);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
 }
 
 nav {
