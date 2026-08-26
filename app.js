@@ -568,6 +568,7 @@ const state = {
   isSearchOpen: false,
   seen: new Set([route()]),
   maxScroll: 0,
+  selectedPaymentMethod: 'upi',
   orders: JSON.parse(localStorage.getItem('tx-orders') || '[]')
 };
 
@@ -1608,31 +1609,68 @@ function renderCheckoutPage() {
               2. Payment Method
             </h3>
 
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px;">
-              <label style="background: var(--bg-input); border: 2px solid var(--accent-orange); border-radius: var(--radius-sm); padding: 14px; text-align: center; cursor: pointer;">
-                <input type="radio" name="paymethod" value="upi" checked style="display:none;" />
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;">
+              <div id="pay-method-upi" onclick="setPaymentMethod('upi')" style="background: var(--bg-card-hover); border: 2px solid var(--accent-orange); box-shadow: 0 0 12px var(--accent-glow); border-radius: var(--radius-sm); padding: 14px; text-align: center; cursor: pointer; transition: var(--transition);">
+                <input type="radio" id="radio-pay-upi" name="paymethod" value="upi" checked style="display:none;" />
                 <div style="font-size: 20px; margin-bottom: 4px;">⚡</div>
                 <strong style="font-size: 12px; display: block;">Instant UPI</strong>
-                <span style="font-size: 10px; color: var(--accent-orange);">0% Fees</span>
-              </label>
+                <span style="font-size: 10px; color: var(--accent-orange); font-weight: 600;">0% Fees</span>
+              </div>
 
-              <label style="background: var(--bg-input); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 14px; text-align: center; cursor: pointer;">
-                <input type="radio" name="paymethod" value="card" style="display:none;" />
+              <div id="pay-method-card" onclick="setPaymentMethod('card')" style="background: var(--bg-input); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 14px; text-align: center; cursor: pointer; transition: var(--transition);">
+                <input type="radio" id="radio-pay-card" name="paymethod" value="card" style="display:none;" />
                 <div style="font-size: 20px; margin-bottom: 4px;">💳</div>
                 <strong style="font-size: 12px; display: block;">Credit / Debit</strong>
                 <span style="font-size: 10px; color: var(--text-tertiary);">All Cards</span>
-              </label>
+              </div>
 
-              <label style="background: var(--bg-input); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 14px; text-align: center; cursor: pointer;">
-                <input type="radio" name="paymethod" value="cod" style="display:none;" />
+              <div id="pay-method-cod" onclick="setPaymentMethod('cod')" style="background: var(--bg-input); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 14px; text-align: center; cursor: pointer; transition: var(--transition);">
+                <input type="radio" id="radio-pay-cod" name="paymethod" value="cod" style="display:none;" />
                 <div style="font-size: 20px; margin-bottom: 4px;">📦</div>
                 <strong style="font-size: 12px; display: block;">Pay on Delivery</strong>
                 <span style="font-size: 10px; color: var(--text-tertiary);">Verified OTP</span>
-              </label>
+              </div>
             </div>
 
-            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; font-size: 15px; padding: 16px;">
-              Confirm & Pay ${formatRupee(total)}
+            <!-- Dynamic Payment Sub-panels -->
+            <div id="pay-details-upi" style="background: var(--bg-glass); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 24px;">
+              <label style="font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 6px;">Enter your UPI ID / VPA</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" id="upi-id-input" placeholder="username@okhdfcbank" style="flex: 1; padding: 10px 12px; font-family: 'DM Mono', monospace; font-size: 13px; background: var(--bg-input); border: 1px solid var(--border-medium); border-radius: var(--radius-xs); color: var(--text-primary);" />
+                <span style="display: flex; align-items: center; padding: 0 12px; font-size: 11px; background: var(--accent-glow); color: var(--accent-orange); border-radius: var(--radius-xs); font-weight: 700;">FAST VERIFY</span>
+              </div>
+              <span style="font-size: 11px; color: var(--text-tertiary); margin-top: 6px; display: block;">Supports Google Pay, PhonePe, Paytm, CRED & BHIM</span>
+            </div>
+
+            <div id="pay-details-card" style="display: none; background: var(--bg-glass); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 24px;">
+              <div class="form-group" style="margin-bottom: 12px;">
+                <label style="font-size: 12px;">Card Number</label>
+                <input type="text" id="card-number-input" placeholder="4532 •••• •••• 8910" maxlength="19" style="font-family: 'DM Mono', monospace; letter-spacing: 1px;" />
+              </div>
+              <div class="form-row" style="margin-bottom: 0;">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 12px;">Expiry (MM/YY)</label>
+                  <input type="text" id="card-expiry-input" placeholder="08/29" maxlength="5" style="font-family: 'DM Mono', monospace;" />
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label style="font-size: 12px;">CVV / CVC</label>
+                  <input type="password" id="card-cvv-input" placeholder="•••" maxlength="4" style="font-family: 'DM Mono', monospace;" />
+                </div>
+              </div>
+            </div>
+
+            <div id="pay-details-cod" style="display: none; background: var(--bg-glass); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 24px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 24px;">📦</span>
+                <div>
+                  <strong style="font-size: 13px; display: block; color: var(--text-primary);">Cash or UPI on Delivery</strong>
+                  <span style="font-size: 11px; color: var(--text-secondary);">Pay in cash or scan driver's dynamic QR code at your doorstep upon delivery.</span>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" id="checkout-submit-btn" class="btn-primary" style="width: 100%; justify-content: center; font-size: 15px; padding: 16px;">
+              ⚡ Confirm & Pay ${formatRupee(total)} via UPI
             </button>
           </form>
         </div>
@@ -1699,8 +1737,7 @@ function handleOrderSubmission(e) {
   const custPhone = document.getElementById('cust-phone')?.value || '';
   const custPin = document.getElementById('cust-pin')?.value || '';
   const custAddress = document.getElementById('cust-address')?.value || '';
-  const payMethodEl = document.querySelector('input[name="paymethod"]:checked');
-  const payMethod = payMethodEl ? payMethodEl.value.toUpperCase() : 'UPI';
+  const payMethod = (state.selectedPaymentMethod || 'upi').toUpperCase();
   const total = getCartTotal();
   const orderItemsSummary = state.cart.map(item => {
     const p = products.find(x => x.id === item.id);
@@ -2291,6 +2328,42 @@ window.addEventListener('keydown', (e) => {
 
 window.addEventListener('hashchange', page);
 
+function setPaymentMethod(method) {
+  state.selectedPaymentMethod = method;
+  
+  const methods = ['upi', 'card', 'cod'];
+  methods.forEach(m => {
+    const el = document.getElementById(`pay-method-${m}`);
+    const input = document.getElementById(`radio-pay-${m}`);
+    const box = document.getElementById(`pay-details-${m}`);
+    const isSelected = (m === method);
+    
+    if (el) {
+      el.style.border = isSelected ? '2px solid var(--accent-orange)' : '1px solid var(--border-medium)';
+      el.style.background = isSelected ? 'var(--bg-card-hover)' : 'var(--bg-input)';
+      el.style.boxShadow = isSelected ? '0 0 12px var(--accent-glow)' : 'none';
+    }
+    if (input) {
+      input.checked = isSelected;
+    }
+    if (box) {
+      box.style.display = isSelected ? 'block' : 'none';
+    }
+  });
+
+  const btn = document.getElementById('checkout-submit-btn');
+  if (btn) {
+    const total = getCartTotal();
+    if (method === 'upi') {
+      btn.innerHTML = `⚡ Confirm & Pay ${formatRupee(total)} via UPI`;
+    } else if (method === 'card') {
+      btn.innerHTML = `💳 Confirm & Pay ${formatRupee(total)} with Card`;
+    } else if (method === 'cod') {
+      btn.innerHTML = `📦 Place Order (${formatRupee(total)} on Delivery)`;
+    }
+  }
+}
+
 // Expose globals for inline event handlers
 Object.assign(window, {
   go,
@@ -2309,6 +2382,7 @@ Object.assign(window, {
   handleModalSearch,
   handleNewsletterSubmit,
   handleOrderSubmission,
+  setPaymentMethod,
   handleLogin,
   logout,
   setCategoryFilter,
