@@ -1694,16 +1694,30 @@ function renderCheckoutPage() {
 function handleOrderSubmission(e) {
   e.preventDefault();
   const orderId = `TX-${Math.floor(100000 + Math.random() * 900000)}`;
-  const custName = document.getElementById('cust-name').value;
-  const custEmail = document.getElementById('cust-email').value;
+  const custName = document.getElementById('cust-name')?.value || '';
+  const custEmail = document.getElementById('cust-email')?.value || '';
+  const custPhone = document.getElementById('cust-phone')?.value || '';
+  const custPin = document.getElementById('cust-pin')?.value || '';
+  const custAddress = document.getElementById('cust-address')?.value || '';
+  const payMethodEl = document.querySelector('input[name="paymethod"]:checked');
+  const payMethod = payMethodEl ? payMethodEl.value.toUpperCase() : 'UPI';
   const total = getCartTotal();
+  const orderItemsSummary = state.cart.map(item => {
+    const p = products.find(x => x.id === item.id);
+    return p ? `${p.name} (x${item.qty})` : `Item #${item.id}`;
+  }).join('; ');
 
   const newOrder = {
     id: orderId,
     date: new Date().toISOString(),
     customerName: custName,
     customerEmail: custEmail,
+    customerPhone: custPhone,
+    customerPin: custPin,
+    customerAddress: custAddress,
+    paymentMethod: payMethod,
     items: [...state.cart],
+    itemsSummary: orderItemsSummary,
     total: total,
     status: 'Confirmed'
   };
@@ -1711,7 +1725,18 @@ function handleOrderSubmission(e) {
   state.orders.unshift(newOrder);
   state.purchased = true;
   state.purchaseAmount = total;
+  state.lastBillingInfo = {
+    name: custName,
+    email: custEmail,
+    phone: custPhone,
+    pin: custPin,
+    address: custAddress,
+    payMethod: payMethod,
+    itemsSummary: orderItemsSummary
+  };
+
   sendAnalytics(true);
+  
   state.purchased = false;
   state.purchaseAmount = 0;
   state.cart = [];
@@ -2307,16 +2332,43 @@ function sendAnalytics(force = false) {
   const now = new Date();
   const formattedDate = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}, ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 
+  const durationSec = Math.round((Date.now() - started) / 1000);
+  const minutes = Math.floor(durationSec / 60);
+  const seconds = durationSec % 60;
+  const durationFormatted = `${minutes}m ${seconds}s`;
+
+  const billing = state.lastBillingInfo || {};
+
   const data = {
+    // 1. Date & Identifiers
     timestamp: formattedDate,
     sessionId: sessionId,
     visitorId: visitor,
-    duration: Math.round((Date.now() - started) / 1000),
+    
+    // 2. Engagement & Duration
+    duration: durationSec,
+    durationFormatted: durationFormatted,
     pages: state.seen.size,
+    pagesVisited: Array.from(state.seen).join(' → '),
     scroll: state.maxScroll || 0,
-    purchased: state.purchased || false,
+    scrollPercentage: `${state.maxScroll || 0}%`,
+    
+    // 3. User Telemetry
+    returning: returning,
+    userType: returning ? 'Returning Visitor' : 'New Visitor',
+    
+    // 4. E-Commerce & Checkout Data
+    purchased: state.purchased ? 'YES' : 'NO',
     purchaseAmount: state.purchaseAmount || 0,
-    returning: returning
+    purchaseAmountFormatted: state.purchaseAmount ? `₹${Number(state.purchaseAmount).toLocaleString('en-IN')}` : '₹0',
+    
+    // 5. Billing & Customer Details
+    customerName: billing.name || '',
+    customerEmail: billing.email || '',
+    customerPhone: billing.phone || '',
+    billingAddress: billing.address ? `${billing.address}, PIN: ${billing.pin}` : '',
+    paymentMethod: billing.payMethod || '',
+    orderedItems: billing.itemsSummary || ''
   };
 
   // 1. Google Spreadsheet webhook (Google Apps Script)
