@@ -2338,37 +2338,48 @@ function sendAnalytics(force = false) {
   const durationFormatted = `${minutes}m ${seconds}s`;
 
   const billing = state.lastBillingInfo || {};
+  const wishlistedNames = (state.wish && state.wish.length > 0)
+    ? state.wish.map(id => {
+        const p = products.find(item => item.id === id);
+        return p ? p.name : `Item #${id}`;
+      }).filter(Boolean).join(', ')
+    : 'None';
 
   const data = {
-    // 1. Date & Identifiers
+    // 1. Time & Identifiers
     timestamp: formattedDate,
+    userId: visitor,
     sessionId: sessionId,
-    visitorId: visitor,
     
-    // 2. Engagement & Duration
-    duration: durationSec,
-    durationFormatted: durationFormatted,
-    pages: state.seen.size,
+    // 2. Engagement
+    sessionDuration: durationSec,
+    sessionDurationFormatted: durationFormatted,
     pagesVisited: Array.from(state.seen).join(' → '),
-    scroll: state.maxScroll || 0,
     scrollPercentage: `${state.maxScroll || 0}%`,
     
-    // 3. User Telemetry
-    returning: returning,
-    userType: returning ? 'Returning Visitor' : 'New Visitor',
-    
-    // 4. E-Commerce & Checkout Data
+    // 3. Purchase & Returning Status
     purchased: state.purchased ? 'YES' : 'NO',
     purchaseAmount: state.purchaseAmount || 0,
-    purchaseAmountFormatted: state.purchaseAmount ? `₹${Number(state.purchaseAmount).toLocaleString('en-IN')}` : '₹0',
+    returningVisitor: returning ? 'Returning' : 'New',
     
-    // 5. Billing & Customer Details
+    // 4. Split Billing Details
     customerName: billing.name || '',
     customerEmail: billing.email || '',
-    customerPhone: billing.phone || '',
-    billingAddress: billing.address ? `${billing.address}, PIN: ${billing.pin}` : '',
+    customerNumber: billing.phone || '',
+    pinCode: billing.pin || '',
+    streetAddress: billing.address || '',
     paymentMethod: billing.payMethod || '',
-    orderedItems: billing.itemsSummary || ''
+    
+    // 5. User Preferences & Wishlist
+    theme: state.theme === 'dark' ? 'Dark Mode' : 'Light Mode',
+    wishlisted: wishlistedNames,
+    
+    // Legacy fields for backward compatibility
+    duration: durationSec,
+    pages: state.seen.size,
+    scroll: state.maxScroll || 0,
+    visitorId: visitor,
+    returning: returning
   };
 
   // 1. Google Spreadsheet webhook (Google Apps Script)
