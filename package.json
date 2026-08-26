@@ -1,7 +1,26 @@
 {
   "name": "techx-storefront",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "TechX — Next-Gen Hardware & Modern Tech Showcase E-Commerce Website",
+  "main": "server.js",
   "type": "module",
-  "scripts": { "start": "node server.js", "dev": "node server.js" },
-  "dependencies": { "express": "^4.21.2" }
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "serve": "node server.js"
+  },
+  "keywords": [
+    "techx",
+    "ecommerce",
+    "hardware",
+    "showcase",
+    "storefront",
+    "vanilla-js",
+    "github-pages"
+  ],
+  "author": "TechX Systems",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
 }

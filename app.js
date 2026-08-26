@@ -360,6 +360,182 @@ const products = [
       'Gas Lift': 'Class 4 Heavy Duty Cylinder',
       'Warranty': '5 Years Comprehensive'
     }
+  },
+  {
+    id: 16,
+    name: 'Vision Spatial AR Pro Glasses',
+    category: 'Wearables',
+    price: 64990,
+    originalPrice: 74990,
+    rating: 4.9,
+    reviewsCount: 67,
+    image: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=900&q=85',
+    badge: 'SPATIAL AI',
+    inStock: true,
+    colors: ['#090d16', '#334155'],
+    description: 'Dual 4K Micro-OLED spatial display with 120Hz refresh, neural hand-tracking, and integrated binaural acoustic transducers.',
+    specs: {
+      'Display': 'Dual 4K Micro-OLED (4000 PPI)',
+      'FOV': '52° Immersive Optical Prism',
+      'Audio': 'Binaural Spatial Acoustic Engine',
+      'Weight': '78g Ultralight Titanium',
+      'Battery': '4 Hours Active + Pocket Hub',
+      'Warranty': '2 Years Official'
+    }
+  },
+  {
+    id: 17,
+    name: 'Titanium Halo Smart Health Ring',
+    category: 'Wearables',
+    price: 18490,
+    originalPrice: 22990,
+    rating: 4.8,
+    reviewsCount: 83,
+    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=85',
+    badge: 'NEW',
+    inStock: true,
+    colors: ['#0f172a', '#cbd5e1', '#ff5e1f'],
+    description: 'Medical-grade biometric sensor suite cast in grade 5 titanium. Continuous body temperature, sleep stages, and real-time stress index.',
+    specs: {
+      'Material': 'Grade 5 Medical Titanium',
+      'Water Resistance': '100m Submersible (10 ATM)',
+      'Battery': '8 Days on Single Charge',
+      'Weight': '3.8 grams Featherweight',
+      'Sensors': 'Dual PPG, Skin Temp, 3D Accelerometer',
+      'Warranty': '2 Years Official'
+    }
+  },
+  {
+    id: 18,
+    name: 'AeroSound 192kHz Studio Broadcast Mic',
+    category: 'Audio',
+    price: 11990,
+    originalPrice: 14990,
+    rating: 4.9,
+    reviewsCount: 94,
+    image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=900&q=85',
+    badge: 'CREATOR PICK',
+    inStock: true,
+    colors: ['#090d16', '#ff5e1f'],
+    description: 'Broadcast-ready 25mm large gold-sputtered cardioid condenser with integrated analog hardware limiter and zero-latency monitoring.',
+    specs: {
+      'Polar Pattern': 'Cardioid / Figure-8 / Omni',
+      'Sample Rate': '192kHz / 24-bit Lossless',
+      'Output': 'USB-C & XLR Dual Interface',
+      'Capsule': '25mm Gold-Plated Diaphragm',
+      'Build': 'Solid Zinc Alloy Frame',
+      'Warranty': '3 Years Official'
+    }
+  },
+  {
+    id: 19,
+    name: 'SteamDeck Elite OLED Handheld',
+    category: 'Gaming',
+    price: 58990,
+    originalPrice: 64990,
+    rating: 4.9,
+    reviewsCount: 147,
+    image: 'https://images.unsplash.com/photo-1612287232230-019313cf14a3?auto=format&fit=crop&w=900&q=85',
+    badge: 'FLAGSHIP',
+    inStock: true,
+    colors: ['#090d16'],
+    description: '7.4-inch 90Hz HDR OLED gaming handheld with custom 6nm AMD APU, 1TB NVMe storage, and hall-effect anti-drift thumbsticks.',
+    specs: {
+      'Screen': '7.4" HDR OLED 90Hz 1000 nits',
+      'APU': 'Custom 6nm AMD Zen2 + RDNA2',
+      'Storage': '1TB PCIe Gen4 NVMe SSD',
+      'Controls': 'Hall Effect Sticks + Haptic Pads',
+      'Battery': '50Wh (3-12 Hours Gaming)',
+      'Warranty': '2 Years Official'
+    }
+  },
+  {
+    id: 20,
+    name: 'MagFlow 3-in-1 Foldable Travel Tree',
+    category: 'Accessories',
+    price: 4490,
+    originalPrice: 5990,
+    rating: 4.8,
+    reviewsCount: 215,
+    image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=900&q=85',
+    badge: 'BESTSELLER',
+    inStock: true,
+    colors: ['#1e293b', '#e2e8f0'],
+    description: 'Pocket-sized folding CNC aluminum charging tree with certified 15W Qi2 MagSafe, Apple Watch fast charging, and AirPods pad.',
+    specs: {
+      'MagSafe Output': '15W Fast Charge (Qi2 Certified)',
+      'Folded Size': 'Card Wallet Dimension (18mm)',
+      'Material': 'Space Grey Anodized Aluminum',
+      'Cable': 'Braided 60W Type-C (Included)',
+      'Case': 'Velvet Travel Pouch Included',
+      'Warranty': 'Lifetime Limited'
+    }
+  },
+  {
+    id: 21,
+    name: 'CyberDeck Mechanical Macro Pad',
+    category: 'Accessories',
+    price: 6290,
+    originalPrice: 7990,
+    rating: 4.9,
+    reviewsCount: 78,
+    image: 'https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=900&q=85',
+    badge: 'HOT',
+    inStock: true,
+    colors: ['#0f172a', '#e2e8f0'],
+    description: '12-key CNC brass weighted programmable macro pad with dual clickable rotary encoders, IPS mini status screen, and hot-swap sockets.',
+    specs: {
+      'Firmware': 'QMK / VIA Configurable',
+      'Switches': 'Gateron Oil King Linear (Pre-lubed)',
+      'Body': 'CNC Solid Aluminum + Brass Weight',
+      'Screen': '0.96" IPS Live Telemetry',
+      'Connectivity': 'Detachable USB-C Braided',
+      'Warranty': '2 Years'
+    }
+  },
+  {
+    id: 22,
+    name: 'OmniView 360 AI Patrol Security Bot',
+    category: 'Smart Home',
+    price: 16990,
+    originalPrice: 21990,
+    rating: 4.7,
+    reviewsCount: 49,
+    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=85',
+    badge: 'SMART AI',
+    inStock: true,
+    colors: ['#ffffff', '#0f172a'],
+    description: 'Autonomous motorized smart home security companion with dual 4K night-vision cameras, obstacle climbing wheels, and local face recognition.',
+    specs: {
+      'Camera': 'Dual 4K Starlight Night Vision',
+      'Movement': 'Autonomous Patrol & Charging Dock',
+      'AI Engine': 'Local Person & Pet Tracking',
+      'Audio': 'Two-way Encrypted Intercom',
+      'Battery': 'Auto-Dock 5000 mAh',
+      'Warranty': '2 Years'
+    }
+  },
+  {
+    id: 23,
+    name: 'AeroShield Biometric Kevlar Pack',
+    category: 'Accessories',
+    price: 8490,
+    originalPrice: 10990,
+    rating: 4.9,
+    reviewsCount: 104,
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=85',
+    badge: 'NEW',
+    inStock: true,
+    colors: ['#090d16', '#334155'],
+    description: 'Waterproof Kevlar ballistic weave tech backpack with 0.3s biometric fingerprint TSA zipper lock and integrated 65W GaN charging pass-through.',
+    specs: {
+      'Security': '0.3s Fingerprint TSA Lock',
+      'Material': 'Ballistic Kevlar & Cordura 1000D',
+      'Laptop Sleeve': 'Shockproof Suspended 16"',
+      'Capacity': '24L Expandable to 30L',
+      'Power Pass': 'USB-C PD 65W Fast Port',
+      'Warranty': '10 Years Warranty'
+    }
   }
 ];
 
@@ -1826,33 +2002,113 @@ function renderAboutPage() {
 
 function renderContactPage() {
   return `
-    <section class="checkout-container" style="max-width: 700px;">
-      <div class="eyebrow">COMMUNICATION CHANNELS</div>
-      <h1 style="font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 800; margin-bottom: 24px;">Let's Talk Hardware</h1>
+    <section class="checkout-container" style="max-width: 960px; padding-top: 40px;">
+      <div style="text-align: center; margin-bottom: 40px;">
+        <div class="eyebrow">DIRECT COMMUNICATION // SPECIALIST SUPPORT</div>
+        <h1 style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(32px, 4vw, 48px); font-weight: 800; margin-bottom: 8px;">
+          Let's Talk Hardware
+        </h1>
+        <p style="color: var(--text-secondary); font-size: 15px; max-width: 540px; margin: 0 auto;">
+          Have questions about our precision tech lineup, custom bulk orders, or warranty claims? Connect directly with our lead hardware specialist.
+        </p>
+      </div>
 
-      <div class="checkout-card">
-        <form onsubmit="event.preventDefault(); showToast('Message sent! Our engineering specialists will reply in 2 hours.', 'success'); this.reset();">
+      <!-- Quick Action Cards Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 36px;">
+        <!-- Phone & WhatsApp Card -->
+        <div class="checkout-card" style="display: flex; flex-direction: column; justify-content: space-between; border-color: rgba(255, 94, 31, 0.3);">
+          <div>
+            <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: rgba(255, 94, 31, 0.15); color: var(--accent-orange); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px;">
+              📞
+            </div>
+            <span style="font: 700 11px 'DM Mono', monospace; color: var(--accent-orange); text-transform: uppercase;">Direct Line & WhatsApp</span>
+            <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; margin: 6px 0 4px;">+91 93727 85040</h3>
+            <p style="color: var(--text-secondary); font-size: 12px;">Instant voice support & WhatsApp catalog orders.</p>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <a href="tel:+919372785040" class="btn-primary" style="flex: 1; padding: 8px 12px; font-size: 12px; justify-content: center;">Call Now</a>
+            <a href="https://wa.me/919372785040?text=Hi%20Vivek,%20I%20am%20interested%20in%20TechX%20hardware" target="_blank" rel="noopener" class="btn-secondary" style="flex: 1; padding: 8px 12px; font-size: 12px; justify-content: center; background: rgba(37, 211, 102, 0.15); border-color: rgba(37, 211, 102, 0.4); color: #25d366;">WhatsApp</a>
+          </div>
+        </div>
+
+        <!-- Email Card -->
+        <div class="checkout-card" style="display: flex; flex-direction: column; justify-content: space-between; border-color: rgba(0, 229, 255, 0.3);">
+          <div>
+            <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: rgba(0, 229, 255, 0.15); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px;">
+              ✉️
+            </div>
+            <span style="font: 700 11px 'DM Mono', monospace; color: var(--accent-cyan); text-transform: uppercase;">Official Inbox</span>
+            <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 16px; margin: 6px 0 4px; word-break: break-all;">vivekwilsoncollege@gmail.com</h3>
+            <p style="color: var(--text-secondary); font-size: 12px;">Enterprise queries, custom specs, and reviews.</p>
+          </div>
+          <div style="margin-top: 16px;">
+            <a href="mailto:vivekwilsoncollege@gmail.com?subject=TechX%20Hardware%20Inquiry" class="btn-secondary" style="width: 100%; padding: 8px 12px; font-size: 12px; justify-content: center; border-color: var(--accent-cyan); color: var(--accent-cyan);">Send Email &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Headquarters / Hours Card -->
+        <div class="checkout-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px;">
+              📍
+            </div>
+            <span style="font: 700 11px 'DM Mono', monospace; color: var(--accent-purple); text-transform: uppercase;">HQ & Campus Office</span>
+            <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; margin: 6px 0 4px;">Wilson College Area</h3>
+            <p style="color: var(--text-secondary); font-size: 12px;">Chowpatty, Mumbai, Maharashtra 400007</p>
+          </div>
+          <div style="background: var(--bg-glass); padding: 8px 12px; border-radius: var(--radius-xs); border: 1px solid var(--border-subtle); margin-top: 16px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--accent-green);">
+            ● Mon - Sun: 9:00 AM - 9:00 PM IST
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Contact Form -->
+      <div class="checkout-card" style="padding: 36px;">
+        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 6px;">Send a Direct Message</h2>
+        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 24px;">Fill out the form below and Vivek will get back to you within 2 hours.</p>
+
+        <form onsubmit="event.preventDefault(); showToast('Message dispatched to Vivek! You will receive a response shortly.', 'success'); this.reset();">
           <div class="form-row">
             <div class="form-group">
-              <label>Your Name *</label>
+              <label>Full Name *</label>
               <input type="text" required placeholder="Aarav Sharma" />
             </div>
             <div class="form-group">
-              <label>Email *</label>
-              <input type="email" required placeholder="aarav@company.com" />
+              <label>Email Address *</label>
+              <input type="email" required placeholder="your.email@example.com" />
             </div>
           </div>
-          <div class="form-group">
-            <label>Subject</label>
-            <input type="text" placeholder="Inquiry regarding custom enterprise hardware orders" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" placeholder="+91 98765 43210" />
+            </div>
+            <div class="form-group">
+              <label>Inquiry Topic</label>
+              <select style="width: 100%; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 12px 14px; color: var(--text-primary);">
+                <option>Hardware Specifications & Stock</option>
+                <option>Order Tracking & Fast Delivery</option>
+                <option>Bulk / Enterprise Purchases</option>
+                <option>Warranty & Technical Assistance</option>
+                <option>Other / Feedback</option>
+              </select>
+            </div>
           </div>
+
           <div class="form-group">
             <label>Message *</label>
-            <textarea rows="4" required placeholder="How can we assist you with our hardware lineup?"></textarea>
+            <textarea rows="4" required placeholder="How can we assist you with TechX hardware today?"></textarea>
           </div>
-          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-            Dispatch Message &rarr;
-          </button>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <span style="font-size: 12px; color: var(--text-tertiary); font-family: 'DM Mono', monospace;">
+              🔒 Direct forwarding to vivekwilsoncollege@gmail.com
+            </span>
+            <button type="submit" class="btn-primary" style="padding: 14px 32px;">
+              Dispatch Message &rarr;
+            </button>
+          </div>
         </form>
       </div>
     </section>
@@ -1870,6 +2126,11 @@ function footer() {
         <div class="footer-brand">
           <a class="brand" href="#/">TECH<span>X</span></a>
           <p>Precision-engineered audio, high-performance computing, smart wearables, and advanced creator hardware.</p>
+          <div style="margin-top: 16px; font-size: 13px; line-height: 1.6;">
+            <p style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Lead Contact:</strong> Vivek</p>
+            <p style="color: var(--text-secondary);"><a href="tel:+919372785040" style="color: var(--accent-orange);">📞 +91 93727 85040</a></p>
+            <p style="color: var(--text-secondary);"><a href="mailto:vivekwilsoncollege@gmail.com" style="color: var(--accent-cyan);">✉️ vivekwilsoncollege@gmail.com</a></p>
+          </div>
         </div>
 
         <div class="footer-col">
@@ -1878,27 +2139,30 @@ function footer() {
             <li><a href="#/shop" onclick="setCategoryFilter('Audio')">Audio & Hi-Fi</a></li>
             <li><a href="#/shop" onclick="setCategoryFilter('Computers')">Computers & OLED</a></li>
             <li><a href="#/shop" onclick="setCategoryFilter('Wearables')">Titanium Wearables</a></li>
+            <li><a href="#/shop" onclick="setCategoryFilter('Gaming')">Gaming Hardware</a></li>
             <li><a href="#/deals">Flash Deals</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>Support</h4>
+          <h4>Support & Contact</h4>
           <ul>
+            <li><a href="#/contact">Contact Vivek (Specialist)</a></li>
+            <li><a href="https://wa.me/919372785040" target="_blank" rel="noopener">WhatsApp Support</a></li>
             <li><a href="#/track-order">Track Shipment</a></li>
             <li><a href="#/about">About TechX</a></li>
-            <li><a href="#/contact">Contact Specialists</a></li>
             <li><a href="#/wishlist">Saved Wishlist</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>GitHub Launch</h4>
-          <ul>
-            <li><a href="https://github.com" target="_blank" rel="noopener">GitHub Repository</a></li>
-            <li><a href="#/about">System Architecture</a></li>
-            <li><a href="#/about">License & MIT</a></li>
-          </ul>
+          <h4>Location</h4>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px;">
+            Wilson College Campus Area,<br>
+            Chowpatty, Mumbai,<br>
+            Maharashtra 400007, India
+          </p>
+          <span style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent-green);">● Active Support 9 AM - 9 PM</span>
         </div>
       </div>
 
@@ -1906,7 +2170,7 @@ function footer() {
         <p>&copy; 2026 TechX Systems Inc. Precision hardware engineered for the future.</p>
         <div style="display: flex; gap: 16px;">
           <span>🔒 256-Bit SSL Encrypted</span>
-          <span>⚡ Zero Telemetry Vault</span>
+          <span>⚡ Direct WhatsApp & Call Support</span>
         </div>
       </div>
     </footer>
