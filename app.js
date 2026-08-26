@@ -2456,30 +2456,51 @@ function sendAnalytics(force = false) {
     returning: returning
   };
 
-  // 1. Google Spreadsheet webhook (Google Apps Script)
-  try {
-    fetch(ANALYTICS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(data)
-    }).catch(() => {});
-  } catch (e) {}
+  const payload = JSON.stringify(data);
 
-  // 2. Local Node server endpoint (if running server.js)
+  // 1. Google Spreadsheet Webhook via navigator.sendBeacon (Guaranteed on close/unload)
+  let sent = false;
+  if (navigator.sendBeacon) {
+    try {
+      const blob = new Blob([payload], { type: 'text/plain;charset=UTF-8' });
+      sent = navigator.sendBeacon(ANALYTICS_URL, blob);
+    } catch (e) {}
+  }
+
+  // 2. Fallback fetch with keepalive
+  if (!sent) {
+    try {
+      fetch(ANALYTICS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        keepalive: true,
+        headers: { 'Content-Type': 'text/plain' },
+        body: payload
+      }).catch(() => {});
+    } catch (e) {}
+  }
+
+  // 3. Local Node server endpoint (if running server.js)
   try {
     fetch('/api/analytics', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: payload
     }).catch(() => {});
   } catch (e) {}
 }
 
+// Lifecycle listeners for reliable data transmission
+window.addEventListener('beforeunload', () => sendAnalytics(false));
 window.addEventListener('pagehide', () => sendAnalytics(false));
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') sendAnalytics(false);
 });
+
+// Initial visit log (after 3 seconds) so live visits register without needing tab close
+setTimeout(() => {
+  sendAnalytics(false);
+}, 3000);
 
 window.addEventListener('scroll', () => {
   const h = document.documentElement.scrollHeight - window.innerHeight;
