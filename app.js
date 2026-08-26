@@ -17,7 +17,7 @@ const products = [
     originalPrice: 24990,
     rating: 4.9,
     reviewsCount: 142,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80',
     badge: 'BESTSELLER',
     inStock: true,
     colors: ['#0d1117', '#e2e8f0', '#ff5e1f'],
@@ -39,7 +39,7 @@ const products = [
     originalPrice: 18990,
     rating: 4.8,
     reviewsCount: 98,
-    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80',
     badge: 'NEW',
     inStock: true,
     colors: ['#1e293b', '#64748b', '#ff5e1f'],
@@ -61,7 +61,7 @@ const products = [
     originalPrice: 99990,
     rating: 5.0,
     reviewsCount: 64,
-    image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&auto=format&fit=crop&q=80',
     badge: 'FEATURED',
     inStock: true,
     colors: ['#0f172a', '#cbd5e1'],
@@ -83,7 +83,7 @@ const products = [
     originalPrice: 45990,
     rating: 4.7,
     reviewsCount: 45,
-    image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&auto=format&fit=crop&q=80',
     badge: 'POPULAR',
     inStock: true,
     colors: ['#000000'],
@@ -105,7 +105,7 @@ const products = [
     originalPrice: 10990,
     rating: 4.9,
     reviewsCount: 112,
-    image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&auto=format&fit=crop&q=80',
     badge: 'HOT',
     inStock: true,
     colors: ['#1e1e2e', '#e2e8f0'],
@@ -127,7 +127,7 @@ const products = [
     originalPrice: 15990,
     rating: 4.6,
     reviewsCount: 38,
-    image: 'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1543512214-318c7553f230?w=800&auto=format&fit=crop&q=80',
     badge: 'NEW',
     inStock: true,
     colors: ['#0f172a', '#ffffff'],
@@ -149,7 +149,7 @@ const products = [
     originalPrice: 6490,
     rating: 4.8,
     reviewsCount: 89,
-    image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=800&auto=format&fit=crop&q=80',
     badge: '20% OFF',
     inStock: true,
     colors: ['#090d16', '#ff5e1f'],
@@ -171,7 +171,7 @@ const products = [
     originalPrice: 84990,
     rating: 4.9,
     reviewsCount: 52,
-    image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&auto=format&fit=crop&q=80',
     badge: 'FEATURED',
     inStock: true,
     colors: ['#0f172a'],
@@ -193,7 +193,7 @@ const products = [
     originalPrice: 8990,
     rating: 4.7,
     reviewsCount: 76,
-    image: 'https://images.unsplash.com/photo-1589003077984-894e133dabab?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=800&auto=format&fit=crop&q=80',
     badge: 'SALE',
     inStock: true,
     colors: ['#1e293b', '#cbd5e1', '#ff5e1f'],
@@ -215,7 +215,7 @@ const products = [
     originalPrice: 38990,
     rating: 4.8,
     reviewsCount: 41,
-    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800&auto=format&fit=crop&q=80',
     badge: 'NEW',
     inStock: true,
     colors: ['#0f172a', '#94a3b8'],
@@ -237,7 +237,7 @@ const products = [
     originalPrice: 62990,
     rating: 4.9,
     reviewsCount: 33,
-    image: 'https://images.unsplash.com/photo-1506947411487-a56738267384?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=800&auto=format&fit=crop&q=80',
     badge: 'PRO',
     inStock: true,
     colors: ['#334155'],
@@ -259,7 +259,7 @@ const products = [
     originalPrice: 4490,
     rating: 4.9,
     reviewsCount: 168,
-    image: 'https://images.unsplash.com/photo-1615526675159-e248c3021d3f?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1586816879360-004f5b0c51e3?w=800&auto=format&fit=crop&q=80',
     badge: 'POPULAR',
     inStock: true,
     colors: ['#0f172a', '#e2e8f0'],
@@ -281,7 +281,7 @@ const products = [
     originalPrice: 4990,
     rating: 4.7,
     reviewsCount: 84,
-    image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop&q=80',
     badge: 'TRENDING',
     inStock: true,
     colors: ['#1e293b'],
@@ -303,7 +303,7 @@ const products = [
     originalPrice: 9990,
     rating: 4.8,
     reviewsCount: 92,
-    image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
     badge: 'HOT',
     inStock: true,
     colors: ['#090d16', '#ffffff'],
@@ -325,7 +325,7 @@ const products = [
     originalPrice: 6990,
     rating: 4.9,
     reviewsCount: 119,
-    image: 'https://images.unsplash.com/photo-1609592424369-0df4b3ffc6b0?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1609592424369-0df4b3ffc6b0?w=800&auto=format&fit=crop&q=80',
     badge: 'ESSENTIAL',
     inStock: true,
     colors: ['#1e293b'],
@@ -347,7 +347,7 @@ const products = [
     originalPrice: 29990,
     rating: 4.9,
     reviewsCount: 57,
-    image: 'https://images.unsplash.com/photo-1580481077190-7361346d1807?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1580481077190-7361346d1807?w=800&auto=format&fit=crop&q=80',
     badge: 'NEW',
     inStock: true,
     colors: ['#0f172a', '#64748b'],
@@ -369,7 +369,7 @@ const products = [
     originalPrice: 74990,
     rating: 4.9,
     reviewsCount: 67,
-    image: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1622979135225-d2ba269bc1df?w=800&auto=format&fit=crop&q=80',
     badge: 'SPATIAL AI',
     inStock: true,
     colors: ['#090d16', '#334155'],
@@ -391,7 +391,7 @@ const products = [
     originalPrice: 22990,
     rating: 4.8,
     reviewsCount: 83,
-    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&auto=format&fit=crop&q=80',
     badge: 'NEW',
     inStock: true,
     colors: ['#0f172a', '#cbd5e1', '#ff5e1f'],
@@ -413,7 +413,7 @@ const products = [
     originalPrice: 14990,
     rating: 4.9,
     reviewsCount: 94,
-    image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800&auto=format&fit=crop&q=80',
     badge: 'CREATOR PICK',
     inStock: true,
     colors: ['#090d16', '#ff5e1f'],
@@ -435,7 +435,7 @@ const products = [
     originalPrice: 64990,
     rating: 4.9,
     reviewsCount: 147,
-    image: 'https://images.unsplash.com/photo-1612287232230-019313cf14a3?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=800&auto=format&fit=crop&q=80',
     badge: 'FLAGSHIP',
     inStock: true,
     colors: ['#090d16'],
@@ -457,7 +457,7 @@ const products = [
     originalPrice: 5990,
     rating: 4.8,
     reviewsCount: 215,
-    image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&auto=format&fit=crop&q=80',
     badge: 'BESTSELLER',
     inStock: true,
     colors: ['#1e293b', '#e2e8f0'],
@@ -479,7 +479,7 @@ const products = [
     originalPrice: 7990,
     rating: 4.9,
     reviewsCount: 78,
-    image: 'https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=800&auto=format&fit=crop&q=80',
     badge: 'HOT',
     inStock: true,
     colors: ['#0f172a', '#e2e8f0'],
@@ -501,7 +501,7 @@ const products = [
     originalPrice: 21990,
     rating: 4.7,
     reviewsCount: 49,
-    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&auto=format&fit=crop&q=80',
     badge: 'SMART AI',
     inStock: true,
     colors: ['#ffffff', '#0f172a'],
@@ -523,7 +523,7 @@ const products = [
     originalPrice: 10990,
     rating: 4.9,
     reviewsCount: 104,
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&auto=format&fit=crop&q=80',
     badge: 'NEW',
     inStock: true,
     colors: ['#090d16', '#334155'],
@@ -765,7 +765,7 @@ function renderQuickViewModal() {
         <button class="modal-close-btn" onclick="closeQuickView()">&times;</button>
         <div class="modal-product-layout">
           <div class="modal-gallery">
-            <img src="${p.image}" alt="${p.name}" />
+            <img src="${p.image}" alt="${p.name}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" />
           </div>
           <div>
             <div class="eyebrow">${p.category} // SPECIFICATION</div>
@@ -870,7 +870,7 @@ function renderCartDrawer() {
           if (!p) return '';
           return `
             <div class="drawer-item">
-              <img src="${p.image}" alt="${p.name}" />
+              <img src="${p.image}" alt="${p.name}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" />
               <div>
                 <strong style="font-size: 13px; display: block; line-height: 1.3;">${p.name}</strong>
                 <span style="font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent-orange); font-weight: 700;">
@@ -1061,7 +1061,7 @@ function handleModalSearch(val) {
   resultsBox.innerHTML = matches.map(p => `
     <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: var(--radius-xs); background: var(--bg-card); cursor: pointer; transition: var(--transition);" onclick="closeSearchModal(); openQuickView(${p.id})">
       <div style="display: flex; align-items: center; gap: 12px;">
-        <img src="${p.image}" alt="${p.name}" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;" />
+        <img src="${p.image}" alt="${p.name}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;" />
         <div>
           <strong style="font-size: 14px; display: block;">${p.name}</strong>
           <span style="font-size: 11px; color: var(--text-tertiary); font-family: 'DM Mono', monospace;">${p.category}</span>
@@ -1090,7 +1090,7 @@ function productCard(p) {
       </button>
 
       <div class="card-media" onclick="openQuickView(${p.id})">
-        <img src="${p.image}" alt="${p.name}" loading="lazy" />
+        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" />
         <div class="quick-view-overlay">
           <button class="quick-view-btn">Quick View 🔍</button>
         </div>
@@ -1170,7 +1170,7 @@ function renderHomePage() {
         <div class="hero-visual">
           <div class="hero-card-featured">
             <div class="image-box">
-              <img src="${products[0].image}" alt="Pulse Pro Headphones" />
+              <img src="${products[0].image}" alt="Pulse Pro Headphones" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" />
             </div>
             <div style="margin-top: 16px;">
               <span class="badge badge-featured">FLAGSHIP OF THE YEAR</span>
@@ -1201,7 +1201,7 @@ function renderHomePage() {
 
       <div class="bento-grid">
         <div class="bento-card col-6 row-2" onclick="setCategoryFilter('Audio'); go('/shop');">
-          <img class="bg-img" src="${products[0].image}" alt="Audio" />
+          <img class="bg-img" src="${products[0].image}" alt="Audio" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" />
           <div class="content">
             <span class="badge badge-featured">FLAGSHIP ACOUSTICS</span>
             <h3>Studio Audio & Wireless</h3>
@@ -1211,7 +1211,7 @@ function renderHomePage() {
         </div>
 
         <div class="bento-card col-6" onclick="setCategoryFilter('Computers'); go('/shop');">
-          <img class="bg-img" src="${products[2].image}" alt="Computers" />
+          <img class="bg-img" src="${products[2].image}" alt="Computers" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&auto=format&fit=crop&q=80';" />
           <div class="content">
             <span class="badge badge-new">COMPUTATIONAL</span>
             <h3>High-Performance Computing</h3>
@@ -1221,7 +1221,7 @@ function renderHomePage() {
         </div>
 
         <div class="bento-card col-4" onclick="setCategoryFilter('Wearables'); go('/shop');">
-          <img class="bg-img" src="${products[1].image}" alt="Wearables" />
+          <img class="bg-img" src="${products[1].image}" alt="Wearables" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80';" />
           <div class="content">
             <span class="badge badge-deal">BIOMETRIC</span>
             <h3>Titanium Wearables</h3>
@@ -1231,7 +1231,7 @@ function renderHomePage() {
         </div>
 
         <div class="bento-card col-4" onclick="setCategoryFilter('Cameras'); go('/shop');">
-          <img class="bg-img" src="${products[3].image}" alt="Cameras" />
+          <img class="bg-img" src="${products[3].image}" alt="Cameras" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&auto=format&fit=crop&q=80';" />
           <div class="content">
             <span class="badge badge-featured">CINEMATIC</span>
             <h3>4K Pocket & Aerial</h3>
@@ -1241,7 +1241,7 @@ function renderHomePage() {
         </div>
 
         <div class="bento-card col-4" onclick="setCategoryFilter('Smart Home'); go('/shop');">
-          <img class="bg-img" src="${products[5].image}" alt="Smart Home" />
+          <img class="bg-img" src="${products[5].image}" alt="Smart Home" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1543512214-318c7553f230?w=800&auto=format&fit=crop&q=80';" />
           <div class="content">
             <span class="badge badge-new">MATTER & THREAD</span>
             <h3>Smart Ecosystems</h3>
@@ -1649,7 +1649,7 @@ function renderCheckoutPage() {
               return `
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px;">
                   <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="${p.image}" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover;" />
+                    <img src="${p.image}" alt="${p.name}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover;" />
                     <div>
                       <strong style="display: block;">${p.name}</strong>
                       <span style="color: var(--text-tertiary); font-size: 11px;">Qty: ${item.qty}</span>
