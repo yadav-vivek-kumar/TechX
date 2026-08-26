@@ -952,8 +952,46 @@ function renderCartDrawer() {
 }
 
 // =============================================================================
-// 8. NAVIGATION BAR
+// 8. NAVIGATION BAR & BRAND LOGO
 // =============================================================================
+
+function brandLogo(size = 34) {
+  return `
+    <span class="brand-logo-wrap" style="display: inline-flex; align-items: center; gap: 10px; text-decoration: none;">
+      <svg class="techx-logo-svg" width="${size}" height="${size}" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 8px rgba(255, 94, 31, 0.4)); flex-shrink: 0; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <defs>
+          <linearGradient id="txGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ff5e1f" />
+            <stop offset="50%" stop-color="#ff3366" />
+            <stop offset="100%" stop-color="#00e5ff" />
+          </linearGradient>
+          <linearGradient id="txBlade" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ff5e1f" />
+            <stop offset="100%" stop-color="#ffa040" />
+          </linearGradient>
+          <linearGradient id="txCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00e5ff" />
+            <stop offset="100%" stop-color="#3b82f6" />
+          </linearGradient>
+        </defs>
+        <!-- Outer Cyber Hexagon -->
+        <polygon points="24,3 43,13.5 43,34.5 24,45 5,34.5 5,13.5" fill="rgba(15, 23, 42, 0.88)" stroke="url(#txGlow)" stroke-width="2.5" stroke-linejoin="round" />
+        <!-- Inner Core Circuit Grid -->
+        <polygon points="24,8 39,16.5 39,31.5 24,40 9,31.5 9,16.5" fill="rgba(255, 94, 31, 0.08)" />
+        <!-- Stylized T-Bar Top -->
+        <path d="M14 17 H34 M24 17 V33" stroke="url(#txCyan)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+        <!-- Dynamic Neon X & Lightning Slash -->
+        <path d="M16 33 L32 16" stroke="url(#txBlade)" stroke-width="3.4" stroke-linecap="round" />
+        <path d="M32 33 L26 26 M22 21 L16 15" stroke="url(#txBlade)" stroke-width="2.8" stroke-linecap="round" />
+        <!-- Central Energy Node -->
+        <circle cx="24" cy="24" r="2.5" fill="#ffffff" />
+      </svg>
+      <span class="brand-text">
+        TECH<span style="color: var(--accent-orange); text-shadow: 0 0 16px var(--accent-orange-glow);">X</span>
+      </span>
+    </span>
+  `;
+}
 
 function nav() {
   const currentPath = route();
@@ -963,8 +1001,8 @@ function nav() {
 
   return `
     <header>
-      <a class="brand" href="#/">
-        TECH<span>X</span>
+      <a class="brand" href="#/" title="TechX Hardware Store">
+        ${brandLogo(36)}
         <span class="brand-badge">2026</span>
       </a>
 
@@ -2210,7 +2248,9 @@ function footer() {
     <footer>
       <div class="footer-top">
         <div class="footer-brand">
-          <a class="brand" href="#/">TECH<span>X</span></a>
+          <a class="brand" href="#/" title="TechX Hardware">
+            ${brandLogo(34)}
+          </a>
           <p>Precision-engineered audio, high-performance computing, smart wearables, and advanced creator hardware.</p>
           <div style="margin-top: 16px; font-size: 13px; line-height: 1.6;">
             <p style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Lead Contact:</strong> Vivek</p>

@@ -238,27 +238,38 @@ header {
 .brand {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -1.2px;
-  color: var(--text-primary);
+  gap: 8px;
+  text-decoration: none;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.brand span {
-  color: var(--accent-orange);
-  text-shadow: 0 0 16px var(--accent-orange-glow);
+.brand:hover {
+  transform: translateY(-1px);
+}
+
+.brand:hover .techx-logo-svg {
+  transform: rotate(-4deg) scale(1.08);
+  filter: drop-shadow(0 0 16px var(--accent-orange)) !important;
+}
+
+.brand-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  color: var(--text-primary);
 }
 
 .brand-badge {
   font-size: 9px;
-  padding: 2px 6px;
-  margin-left: 6px;
-  border-radius: var(--radius-xs);
-  background: var(--border-subtle);
-  color: var(--text-secondary);
+  padding: 2px 7px;
+  margin-left: 2px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 94, 31, 0.12);
+  border: 1px solid rgba(255, 94, 31, 0.25);
+  color: var(--accent-orange);
   font-family: 'DM Mono', monospace;
+  font-weight: 700;
   vertical-align: middle;
 }
 
