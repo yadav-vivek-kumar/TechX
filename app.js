@@ -554,6 +554,30 @@ const route = () => {
   return hash ? hash.split('?')[0] : '/';
 };
 
+const getPageName = (path) => {
+  const map = {
+    '/': 'Home Page',
+    '/shop': 'Shop Page',
+    '/audio': 'Audio Page',
+    '/computers': 'Computers Page',
+    '/wearables': 'Wearables Page',
+    '/cameras': 'Cameras Page',
+    '/smart-home': 'Smart Home Page',
+    '/accessories': 'Accessories Page',
+    '/gaming': 'Gaming Page',
+    '/deals': 'Deals & Offers Page',
+    '/new-arrivals': 'New Arrivals Page',
+    '/checkout': 'Checkout Page',
+    '/track-order': 'Track Order Page',
+    '/wishlist': 'Wishlist Page',
+    '/account': 'My Account Page',
+    '/login': 'Login Page',
+    '/about': 'About Us Page',
+    '/contact': 'Contact Us Page'
+  };
+  return map[path] || (path.startsWith('/') ? path.slice(1).replace('-', ' ') + ' Page' : path);
+};
+
 const state = {
   cart: JSON.parse(localStorage.getItem('tx-cart') || '[]'),
   wish: JSON.parse(localStorage.getItem('tx-wish') || '[]'),
@@ -566,7 +590,7 @@ const state = {
   isCartOpen: false,
   isMobileMenuOpen: false,
   isSearchOpen: false,
-  seen: new Set([route()]),
+  seen: new Set([getPageName(route())]),
   maxScroll: 0,
   selectedPaymentMethod: 'upi',
   orders: JSON.parse(localStorage.getItem('tx-orders') || '[]')
@@ -1592,11 +1616,11 @@ function renderCheckoutPage() {
             <div class="form-row">
               <div class="form-group">
                 <label>Phone Number *</label>
-                <input type="tel" id="cust-phone" required placeholder="+91 98765 43210" />
+                <input type="text" id="cust-phone" inputmode="numeric" required placeholder="e.g. 9372785040" maxlength="15" style="font-family: inherit;" />
               </div>
               <div class="form-group">
                 <label>PIN Code *</label>
-                <input type="text" id="cust-pin" required placeholder="560001" />
+                <input type="text" id="cust-pin" inputmode="numeric" required placeholder="400007" maxlength="6" style="font-family: inherit;" />
               </div>
             </div>
 
@@ -1733,10 +1757,10 @@ function handleOrderSubmission(e) {
   e.preventDefault();
   const orderId = `TX-${Math.floor(100000 + Math.random() * 900000)}`;
   const custName = document.getElementById('cust-name')?.value || '';
-  const custEmail = document.getElementById('cust-email')?.value || '';
-  const custPhone = document.getElementById('cust-phone')?.value || '';
-  const custPin = document.getElementById('cust-pin')?.value || '';
-  const custAddress = document.getElementById('cust-address')?.value || '';
+  const custEmail = (document.getElementById('cust-email')?.value || '').trim();
+  const custPhone = (document.getElementById('cust-phone')?.value || '').trim().replace(/[^\d+]/g, '');
+  const custPin = (document.getElementById('cust-pin')?.value || '').trim();
+  const custAddress = (document.getElementById('cust-address')?.value || '').trim();
   const payMethod = (state.selectedPaymentMethod || 'upi').toUpperCase();
   const total = getCartTotal();
   const orderItemsSummary = state.cart.map(item => {
@@ -1762,6 +1786,7 @@ function handleOrderSubmission(e) {
   state.orders.unshift(newOrder);
   state.purchased = true;
   state.purchaseAmount = total;
+  state.seen.add('Payment & Order Receipt');
   state.lastBillingInfo = {
     name: custName,
     email: custEmail,
@@ -2244,7 +2269,7 @@ function footer() {
 
 function page() {
   const currentPath = route();
-  state.seen.add(currentPath);
+  state.seen.add(getPageName(currentPath));
   window.scrollTo({ top: 0, behavior: 'instant' });
 
   let mainContent = '';
@@ -2425,9 +2450,8 @@ function sendAnalytics(force = false) {
     userId: visitor,
     sessionId: sessionId,
     
-    // 2. Engagement
-    sessionDuration: durationSec,
-    sessionDurationFormatted: durationFormatted,
+    // 2. Engagement (Readable format only)
+    sessionDuration: durationFormatted,
     pagesVisited: Array.from(state.seen).join(' → '),
     scrollPercentage: `${state.maxScroll || 0}%`,
     
@@ -2446,14 +2470,7 @@ function sendAnalytics(force = false) {
     
     // 5. User Preferences & Wishlist
     theme: state.theme === 'dark' ? 'Dark Mode' : 'Light Mode',
-    wishlisted: wishlistedNames,
-    
-    // Legacy fields for backward compatibility
-    duration: durationSec,
-    pages: state.seen.size,
-    scroll: state.maxScroll || 0,
-    visitorId: visitor,
-    returning: returning
+    wishlisted: wishlistedNames
   };
 
   const payload = JSON.stringify(data);
