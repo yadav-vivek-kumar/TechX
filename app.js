@@ -765,7 +765,7 @@ function renderQuickViewModal() {
         <button class="modal-close-btn" onclick="closeQuickView()">&times;</button>
         <div class="modal-product-layout">
           <div class="modal-gallery">
-            <img src="${p.image}" alt="${p.name}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" />
+            <img src="${p.image}" alt="${p.name}" referrerpolicy="no-referrer" />
           </div>
           <div>
             <div class="eyebrow">${p.category} // SPECIFICATION</div>
@@ -870,7 +870,7 @@ function renderCartDrawer() {
           if (!p) return '';
           return `
             <div class="drawer-item">
-              <img src="${p.image}" alt="${p.name}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" />
+              <img src="${p.image}" alt="${p.name}" referrerpolicy="no-referrer" />
               <div>
                 <strong style="font-size: 13px; display: block; line-height: 1.3;">${p.name}</strong>
                 <span style="font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent-orange); font-weight: 700;">
@@ -1061,7 +1061,7 @@ function handleModalSearch(val) {
   resultsBox.innerHTML = matches.map(p => `
     <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: var(--radius-xs); background: var(--bg-card); cursor: pointer; transition: var(--transition);" onclick="closeSearchModal(); openQuickView(${p.id})">
       <div style="display: flex; align-items: center; gap: 12px;">
-        <img src="${p.image}" alt="${p.name}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;" />
+        <img src="${p.image}" alt="${p.name}" referrerpolicy="no-referrer" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;" />
         <div>
           <strong style="font-size: 14px; display: block;">${p.name}</strong>
           <span style="font-size: 11px; color: var(--text-tertiary); font-family: 'DM Mono', monospace;">${p.category}</span>
@@ -1090,7 +1090,7 @@ function productCard(p) {
       </button>
 
       <div class="card-media" onclick="openQuickView(${p.id})">
-        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" />
+        <img src="${p.image}" alt="${p.name}" loading="lazy" referrerpolicy="no-referrer" />
         <div class="quick-view-overlay">
           <button class="quick-view-btn">Quick View 🔍</button>
         </div>
@@ -1170,7 +1170,7 @@ function renderHomePage() {
         <div class="hero-visual">
           <div class="hero-card-featured">
             <div class="image-box">
-              <img src="${products[0].image}" alt="Pulse Pro Headphones" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" />
+              <img src="${products[0].image}" alt="Pulse Pro Headphones" referrerpolicy="no-referrer" />
             </div>
             <div style="margin-top: 16px;">
               <span class="badge badge-featured">FLAGSHIP OF THE YEAR</span>
@@ -1201,7 +1201,7 @@ function renderHomePage() {
 
       <div class="bento-grid">
         <div class="bento-card col-6 row-2" onclick="setCategoryFilter('Audio'); go('/shop');">
-          <img class="bg-img" src="${products[0].image}" alt="Audio" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" />
+          <img class="bg-img" src="${products[0].image}" alt="Audio" referrerpolicy="no-referrer" />
           <div class="content">
             <span class="badge badge-featured">FLAGSHIP ACOUSTICS</span>
             <h3>Studio Audio & Wireless</h3>
@@ -1211,7 +1211,7 @@ function renderHomePage() {
         </div>
 
         <div class="bento-card col-6" onclick="setCategoryFilter('Computers'); go('/shop');">
-          <img class="bg-img" src="${products[2].image}" alt="Computers" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&auto=format&fit=crop&q=80';" />
+          <img class="bg-img" src="${products[2].image}" alt="Computers" referrerpolicy="no-referrer" />
           <div class="content">
             <span class="badge badge-new">COMPUTATIONAL</span>
             <h3>High-Performance Computing</h3>
@@ -1221,7 +1221,7 @@ function renderHomePage() {
         </div>
 
         <div class="bento-card col-4" onclick="setCategoryFilter('Wearables'); go('/shop');">
-          <img class="bg-img" src="${products[1].image}" alt="Wearables" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80';" />
+          <img class="bg-img" src="${products[1].image}" alt="Wearables" referrerpolicy="no-referrer" />
           <div class="content">
             <span class="badge badge-deal">BIOMETRIC</span>
             <h3>Titanium Wearables</h3>
@@ -1231,7 +1231,7 @@ function renderHomePage() {
         </div>
 
         <div class="bento-card col-4" onclick="setCategoryFilter('Cameras'); go('/shop');">
-          <img class="bg-img" src="${products[3].image}" alt="Cameras" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=800&auto=format&fit=crop&q=80';" />
+          <img class="bg-img" src="${products[3].image}" alt="Cameras" referrerpolicy="no-referrer" />
           <div class="content">
             <span class="badge badge-featured">CINEMATIC</span>
             <h3>4K Pocket & Aerial</h3>
@@ -1241,7 +1241,7 @@ function renderHomePage() {
         </div>
 
         <div class="bento-card col-4" onclick="setCategoryFilter('Smart Home'); go('/shop');">
-          <img class="bg-img" src="${products[5].image}" alt="Smart Home" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1543512214-318c7553f230?w=800&auto=format&fit=crop&q=80';" />
+          <img class="bg-img" src="${products[5].image}" alt="Smart Home" referrerpolicy="no-referrer" />
           <div class="content">
             <span class="badge badge-new">MATTER & THREAD</span>
             <h3>Smart Ecosystems</h3>
@@ -1649,7 +1649,7 @@ function renderCheckoutPage() {
               return `
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px;">
                   <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="${p.image}" alt="${p.name}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover;" />
+                    <img src="${p.image}" alt="${p.name}" referrerpolicy="no-referrer" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover;" />
                     <div>
                       <strong style="display: block;">${p.name}</strong>
                       <span style="color: var(--text-tertiary); font-size: 11px;">Qty: ${item.qty}</span>
