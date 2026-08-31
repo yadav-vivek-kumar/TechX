@@ -1016,12 +1016,6 @@ function nav() {
       </nav>
 
       <div class="nav-actions">
-        <!-- Live Telemetry Radar Status Indicator -->
-        <button class="tx-telemetry-badge" onclick="openTelemetryHUD()" title="Live Telemetry HUD — Tracking 15 User Metrics">
-          <span class="radar-dot"></span>
-          <span>LIVE TELEMETRY</span>
-        </button>
-
         <button class="search-trigger-btn" onclick="openSearchModal()" title="Search catalog">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <span>Search gear...</span>
@@ -1199,30 +1193,34 @@ function renderHomePage() {
   const featured = products.slice(0, 8);
 
   return `
-    <!-- Hero Section -->
+    <!-- Welcome Hero Section -->
     <section class="hero">
       <div class="ambient-orb"></div>
       <div class="hero-grid">
         <div class="hero-content">
           <div class="hero-pill">
             <span class="live-dot"></span>
-            <span>2026 FLAGSHIP RELEASES LIVE</span>
+            <span>⚡ WELCOME TO TECHX STOREFRONT</span>
           </div>
           <h1>
-            Engineered for <span class="gradient-text">speed</span>, built for precision.
+            Welcome to the future of <span class="gradient-text">precision hardware</span>.
           </h1>
           <p class="sub">
-            A radical synthesis of industrial design, computational intelligence, and uncompromising tactile feedback.
+            Discover an elite ecosystem of high-performance computing, aerospace titanium wearables, studio acoustics, 4K cinema optics, and creator gear engineered for speed and precision.
           </p>
           <div class="hero-actions">
             <button class="btn-primary" onclick="go('/shop')">
-              Explore Collection &rarr;
+              Explore All Hardware &rarr;
             </button>
-            <button class="btn-secondary" onclick="openQuickView(0)">
-              Spotlight Hardware
+            <button class="btn-secondary" onclick="go('/deals')">
+              ⚡ View Deals & Offers
             </button>
           </div>
           <div class="hero-stats">
+            <div class="stat-item">
+              <strong>16+</strong>
+              <span>FLAGSHIP MODELS</span>
+            </div>
             <div class="stat-item">
               <strong>50K+</strong>
               <span>GLOBAL CREATORS</span>
@@ -1233,26 +1231,84 @@ function renderHomePage() {
             </div>
             <div class="stat-item">
               <strong>2 YRS</strong>
-              <span>WARRANTY</span>
+              <span>OFFICIAL WARRANTY</span>
             </div>
           </div>
         </div>
 
         <div class="hero-visual">
-          <div class="hero-card-featured">
-            <div class="image-box">
-              <img src="${products[0].image}" alt="Pulse Pro Headphones" referrerpolicy="no-referrer" />
+          <div class="welcome-ecosystem-card">
+            <div class="welcome-card-header">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="live-dot" style="background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan);"></span>
+                <span style="font: 700 11px 'DM Mono', monospace; color: var(--accent-cyan); letter-spacing: 1.5px;">TECHX ECOSYSTEM 2026</span>
+              </div>
+              <span class="badge badge-featured">FLAGSHIP HUB</span>
             </div>
-            <div style="margin-top: 16px;">
-              <span class="badge badge-featured">FLAGSHIP OF THE YEAR</span>
-              <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; margin: 8px 0 4px;">Pulse Pro Wireless</h3>
-              <p style="color: var(--text-secondary); font-size: 13px;">40mm Custom Titanium Drivers with Lossless Ultra-Low Latency.</p>
+            
+            <div class="welcome-matrix-grid">
+              <!-- Quadrant 1: Audio -->
+              <div class="welcome-matrix-item" onclick="setCategoryFilter('Audio'); go('/shop');" title="Explore Audio Collection">
+                <div class="matrix-img-box">
+                  <img src="${products[0].image}" alt="Audio Gear" referrerpolicy="no-referrer" />
+                </div>
+                <div class="matrix-info">
+                  <span class="matrix-tag">AUDIO</span>
+                  <strong>Acoustic Engines</strong>
+                  <span class="matrix-price">From ₹8,990</span>
+                </div>
+              </div>
+
+              <!-- Quadrant 2: Wearables -->
+              <div class="welcome-matrix-item" onclick="setCategoryFilter('Wearables'); go('/shop');" title="Explore Wearables Collection">
+                <div class="matrix-img-box">
+                  <img src="${products[1].image}" alt="Titanium Wearables" referrerpolicy="no-referrer" />
+                </div>
+                <div class="matrix-info">
+                  <span class="matrix-tag">WEARABLES</span>
+                  <strong>Titanium Gear</strong>
+                  <span class="matrix-price">From ₹4,990</span>
+                </div>
+              </div>
+
+              <!-- Quadrant 3: Computing -->
+              <div class="welcome-matrix-item" onclick="setCategoryFilter('Computers'); go('/shop');" title="Explore Computing Collection">
+                <div class="matrix-img-box">
+                  <img src="${products[2].image}" alt="Computing" referrerpolicy="no-referrer" />
+                </div>
+                <div class="matrix-info">
+                  <span class="matrix-tag">COMPUTERS</span>
+                  <strong>Neural Silicon</strong>
+                  <span class="matrix-price">From ₹32,990</span>
+                </div>
+              </div>
+
+              <!-- Quadrant 4: Optics & Cameras -->
+              <div class="welcome-matrix-item" onclick="setCategoryFilter('Cameras'); go('/shop');" title="Explore Cameras Collection">
+                <div class="matrix-img-box">
+                  <img src="${products[3].image}" alt="Cinema Cameras" referrerpolicy="no-referrer" />
+                </div>
+                <div class="matrix-info">
+                  <span class="matrix-tag">CAMERAS & GEAR</span>
+                  <strong>4K Cinema Optics</strong>
+                  <span class="matrix-price">From ₹24,990</span>
+                </div>
+              </div>
             </div>
-            <div class="floating-pill-stat">
-              <span style="font-size: 22px;">⚡</span>
-              <div>
-                <strong style="display: block; font-size: 13px;">Lossless 2.4G</strong>
-                <span style="font-size: 11px; color: var(--text-tertiary);">0.01ms Latency</span>
+
+            <!-- Welcome Perks Strip -->
+            <div class="welcome-badge-strip">
+              <div class="welcome-mini-badge">
+                <span>🚀</span>
+                <span>Express Delivery</span>
+              </div>
+              <div class="welcome-mini-badge">
+                <span>🛡️</span>
+                <span>2-Yr Warranty</span>
+              </div>
+              <div class="welcome-mini-badge">
+                <span>⚡</span>
+                <span>Instant Checkout</span>
               </div>
             </div>
           </div>
