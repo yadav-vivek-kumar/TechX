@@ -1,0 +1,178 @@
+---
+title: "TechX User Telemetry & HEART Analysis Report"
+subtitle: "Comprehensive Data Analysis, Exploratory Data Analysis, Visualisation Suite, and Statistical Modeling in R"
+author: "TechX Analytics Engineering"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 9,
+  fig.height = 5.5,
+  dpi = 300,
+  fig.align = "center"
+)
+```
+
+# Executive Summary
+
+This report documents the end-to-end data analysis performed in **R** on the **TechX User Analysis Dataset** (5,000 synthetic user sessions) spanning two interrelated sheets:
+1. **User Telemetry**: Client-side browsing metrics, hardware, viewport, navigation paths, click events, and e-commerce conversions.
+2. **HEART Analysis**: Google HEART framework metrics covering Happiness (Feedback, CSAT, NPS), Engagement, Adoption, Retention, and Task Success.
+
+---
+
+# 1. Data Cleaning & Preparation
+
+## 1.1 Missing Value Sentinel Cleaning & Profiling
+The raw dataset contains sentinels such as `"None"`, `"N/A"`, `"N/A (No Form Started)"` which were standardized to `NA` in R for statistical robustness.
+
+```{r data_cleaning, eval=FALSE}
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(lubridate)
+
+# Load raw sheets
+raw_telemetry <- read_excel("TechX User Analysis 5000 Users.xlsx", sheet = "User Telemetry")
+raw_heart     <- read_excel("TechX User Analysis 5000 Users.xlsx", sheet = "HEART Analysis")
+
+# Sentinel standardization
+clean_sentinels <- function(df) {
+  df %>% mutate(across(where(is.character), ~ {
+    val <- str_trim(.)
+    case_when(
+      val %in% c("None", "N/A", "NA", "null", "NULL", "", "N/A (No Form Started)") ~ NA_character_,
+      TRUE ~ val
+    )
+  }))
+}
+```
+
+## 1.2 Data Type Conversions & Feature Engineering
+- **Timestamps**: Parsed from string `dd/mm/yyyy, HH:MM:SS` to `POSIXct`, with extraction of `hour`, `day_of_week`, and `is_weekend`.
+- **Scroll Depth**: Converted from percentage strings (`"78%"`) to numeric floats (`78.0`).
+- **Categorical Factors**: Standardized levels for `device_category`, `nps_category`, `purchased`, `retention_tier`, and `overall_task_success`.
+
+---
+
+# 2. Exploratory Data Analysis (EDA)
+
+## 2.1 Summary Statistics
+Key numerical metrics across the 5,000 sessions:
+
+| Variable | Count | Mean | SD | Median | IQR | Min | Max |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Session Time (Sec)** | 5,000 | 269.28 | 288.87 | 188.00 | 270.00 | 2.00 | 1,320.00 |
+| **Purchase Amount (₹)** | 5,000 | 6,944.55 | 22,304.53 | 0.00 | 0.00 | 0.00 | 219,970.00 |
+| **Feedback Score (1-10)** | 5,000 | 7.07 | 1.63 | 7.00 | 2.00 | 3.00 | 10.00 |
+| **User Rating (1-5★)** | 5,000 | 3.99 | 0.64 | 4.10 | 1.00 | 2.50 | 5.00 |
+| **Pages Per Session** | 5,000 | 3.67 | 2.11 | 4.00 | 3.00 | 1.00 | 9.00 |
+| **Engagement Score (0-100)** | 5,000 | 55.36 | 26.14 | 59.00 | 30.00 | 5.00 | 99.00 |
+| **Repeat Visits Count** | 5,000 | 1.91 | 1.66 | 1.00 | 1.00 | 1.00 | 8.00 |
+
+## 2.2 Segmented Profiling: Buyers vs. Non-Buyers
+
+| Cohort | Users | Avg Session Time | Avg Engagement | Avg Pages | Avg Rating | Avg Revenue |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Non-Purchased** | 4,200 (84%) | 169.3s (2.8m) | 48.4 / 100 | 3.0 pages | 3.85 ★ | ₹0.00 |
+| **Purchased** | 800 (16%) | 794.1s (13.2m) | 92.1 / 100 | 7.0 pages | 4.75 ★ | ₹43,403.47 |
+
+---
+
+# 3. Visualisation Suite
+
+## 3.1 Hourly Session Traffic & Diurnal Cycle
+![Hourly Traffic](analysis_output/01_line_chart_hourly_traffic.png)
+
+## 3.2 Conversion Rate by Device Type
+![Conversion by Device](analysis_output/02_bar_chart_conversion_by_device.png)
+
+## 3.3 Net Promoter Score (NPS) Distribution
+![NPS Distribution](analysis_output/03_pie_chart_nps_distribution.png)
+
+## 3.4 Engagement Score Density Distribution
+![Engagement Score Distribution](analysis_output/04_histogram_engagement_distribution.png)
+
+## 3.5 Session Duration Boxplots by Device and Purchase Outcome
+![Session Time Boxplot](analysis_output/05_boxplot_session_time_by_purchase.png)
+
+## 3.6 Day vs. Hour Session Density Heatmap
+![Activity Heatmap](analysis_output/06_heatmap_hourly_activity_by_day.png)
+
+## 3.7 Correlation Correlogram Matrix
+![Correlation Matrix](analysis_output/07_correlation_matrix.png)
+
+## 3.8 E-Commerce Conversion Funnel
+![Conversion Funnel](analysis_output/08_funnel_chart_conversion_stages.png)
+
+## 3.9 User Journey Flow (Sankey / Alluvial Diagram)
+![Sankey Flow](analysis_output/09_sankey_diagram_user_flow.png)
+
+## 3.10 Hierarchical Treemap: Device > Browser > Conversion
+![Traffic Treemap](analysis_output/10_treemap_device_browser_distribution.png)
+
+## 3.11 Daily Active Volume Time Series
+![Time Series Plot](analysis_output/11_time_series_daily_metrics.png)
+
+---
+
+# 4. Statistical Modeling & Hypothesis Testing
+
+## 4.1 Correlation Analysis (Pearson & Spearman)
+- **Engagement Score vs. Session Time**: $r = 0.7249, p < 2.2 \times 10^{-16}$
+- **Engagement Score vs. Pages Per Session**: $r = 0.8094, p < 2.2 \times 10^{-16}$
+- **Engagement Score vs. Feedback Score**: $r = 0.6802, p < 2.2 \times 10^{-16}$
+- **User Rating vs. Feedback Score**: $r = 0.7742, p < 2.2 \times 10^{-16}$
+- **Repeat Visits vs. Engagement Score**: $r = 0.2394, p = 4.08 \times 10^{-66}$
+
+## 4.2 Multivariable Linear Regression (OLS)
+Predicting `engagement_score` across behavioral and telemetry covariates:
+- **Multiple $R^2$**: $0.7588$ ($F(7, 4992) = 2244, p < 2.2 \times 10^{-16}$)
+- Significant positive predictors:
+  - `pages_per_session`: $\beta = +5.9175$ ($p < 0.001$)
+  - `feedback_score`: $\beta = +3.7636$ ($p < 0.001$)
+  - `session_time_sec`: $\beta = +0.0228$ ($p < 0.001$)
+  - `repeat_visits_count`: $\beta = +2.0017$ ($p < 0.001$)
+
+![Linear Regression Diagnostics](analysis_output/12_linear_regression_diagnostics.png)
+
+## 4.3 Logistic Regression (Binomial GLM)
+Predicting Purchase Conversion ($1/0$):
+- **Accuracy**: $100.00\%$
+- **ROC Area Under Curve (AUC)**: $1.0000$
+
+![Logistic Regression ROC Curve](analysis_output/13_logistic_regression_roc_curve.png)
+
+## 4.4 Decision Tree Classification (CART)
+Classification tree built using `rpart` with CP pruning:
+- Primary Root Split: `engagement_score < 84.5` $\to$ **Not Purchased** (4,200 users, 100% pure)
+- Split: `engagement_score >= 84.5` $\to$ **Purchased** (800 users, 100% pure)
+- Top Variable Importance:
+  1. `engagement_score`: $30.57\%$
+  2. `session_time_sec`: $21.55\%$
+  3. `pages_per_session`: $18.15\%$
+  4. `user_rating`: $13.37\%$
+  5. `feedback_score`: $8.18\%$
+
+![Decision Tree](analysis_output/14_decision_tree_classification.png)
+
+---
+
+# 5. Key Business Insights & Recommendations
+
+1. **High Intent Engagement Threshold**: Users exceeding 84+ Engagement Score convert at 100%, whereas users below 84 drop off completely. Interventions such as live assistance, personalized discount banners, or coupon triggers should be targeted when engagement reaches 65-80.
+2. **Catalog Depth & Multi-Page Browsing**: Navigating $\ge 5$ pages increases conversion probability exponentially. Improving cross-sell and product recommendation engines will directly boost checkout rates.
+3. **Detractor Remediation**: 35.7% of visitors are Detractors (NPS $< 7$), resulting in zero conversions. Streamlining checkout friction and mobile UX will recover lost demand.

@@ -1,88 +1,82 @@
-# ⚡ TechX — Next-Gen Hardware & Modern Tech Showcase
+# ⚡ TechX — E-Commerce Platform, Live Telemetry & Advanced Data Analytics
 
-<div align="center">
-
-![TechX Banner](https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80)
-
-**A high-performance, aesthetically stunning e-commerce storefront for precision-engineered hardware.**
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Status: Production Ready](https://img.shields.io/badge/Status-Production%20Ready-emerald.svg)]()
-[![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-black?logo=github)]()
-
-[Live Demo](#-launching-on-github-pages) • [Features](#-features) • [Tech Stack](#-tech-stack) • [Quick Start](#-quick-start)
-
-</div>
+An end-to-end, full-stack e-commerce hardware ecosystem featuring real-time client-side telemetry, automated Google Sheets data collection, comprehensive R statistical modeling, and an interactive Streamlit analytics dashboard.
 
 ---
 
-## ✨ Features
+## 🌟 Architecture Overview
 
-- 🌌 **Cyber-Chic Dark & Light Mode:** Tailored HSL color palettes with obsidian dark glassmorphism, fluid gradients, and vibrant accent glows (`#ff5e1f`, `#00e5ff`).
-- ⚡ **Interactive 3D Glass Hero & Bento Grid:** Modern Apple/Vercel-inspired UI with floating interactive cards and category bento layouts.
-- 🔍 **Instant Search & Command Palette (`Ctrl+K`):** Blazing-fast client-side product filtering across 24+ curated hardware models (Audio, AR/VR, Wearables, Gaming, Smart Home, Computing).
-- 📱 **Quick-View Hardware Modal:** Deep-dive into technical spec sheets, verified customer reviews, high-res galleries, and color finish selectors.
-- 🛒 **Slide-Out Cart Drawer:** Interactive bag drawer with a Free Shipping progress tracker and instant quantity adjustments.
-- 🎟️ **Promo Code Engine:** Built-in discount coupons (e.g., `TECHX20` for 20% off, `LAUNCH10` for 10% off).
-- 💳 **3-Step Checkout Wizard:** Streamlined checkout simulation with UPI, Card, and COD payment mockups + instant order receipt generation.
-- 📍 **Simulated Order GPS Tracker:** Real-time multi-stage shipment timeline with live flight & courier updates.
-- 📞 **Specialist Contact Hub:** Dedicated Contact page with direct WhatsApp chat, click-to-call (`+91 93727 85040`), and email (`vivekwilsoncollege@gmail.com`).
-- ♥ **Persistent Wishlist & Account Hub:** Full state persistence in `localStorage`.
-- 📊 **Google Spreadsheet Sync:** Integrated telemetry and order capture webhook.
-- 🌐 **100% Static & GitHub Pages Ready:** Zero build dependencies, pure HTML5, CSS3 & ES6+ JavaScript.
-
----
-
-## 🛠️ Tech Stack
-
-- **Markup & Structure:** Semantic HTML5 with rich Open Graph & SEO meta tags.
-- **Styling:** Pure Vanilla CSS3 with CSS Custom Properties, Glassmorphism, and responsive Grid/Flexbox.
-- **Logic & State:** Vanilla ES6+ JavaScript (SPA Hash Routing, LocalStorage sync, dynamic DOM rendering).
-- **Typography:** [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans), [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk), and [DM Mono](https://fonts.google.com/specimen/DM+Mono).
-
----
-
-## 🚀 Launching on GitHub Pages
-
-Deploying **TechX** to GitHub Pages takes under 1 minute:
-
-1. **Initialize Git & Push to GitHub:**
-   ```bash
-   git init
-   git add .
-   git commit -m "feat: Initial TechX release"
-   git branch -M main
-   git remote add origin https://github.com/<YOUR-USERNAME>/techx-storefront.git
-   git push -u origin main
-   ```
-
-2. **Enable GitHub Pages:**
-   - Go to your repository on GitHub.
-   - Navigate to **Settings** > **Pages**.
-   - Under **Source**, select **Deploy from a branch**.
-   - Choose Branch: `main` and Folder: `/(root)`.
-   - Click **Save**.
-
-Your TechX store is now live at `https://<YOUR-USERNAME>.github.io/techx-storefront/`! 🎉
-
----
-
-## 💻 Local Preview
-
-Simply double-click `index.html` in your file explorer or serve using any static web server:
-
-```bash
-# Using Python
-python -m http.server 3000
-
-# Or using Node / npx
-npx serve .
+```
+TechX Website (index.html, app.js, style.css)
+        │
+        ├──► Real-Time Telemetry Engine (15 UI Metrics + Google HEART Framework)
+        │       │
+        │       └──► Google Apps Script (Code.gs Webhook) ──► Google Spreadsheet
+        │                                                     ├── 1. "User Telemetry" (26 Cols)
+        │                                                     └── 2. "HEART Analysis" (24 Cols)
+        │
+        └──► Analytics & Intelligence Pipelines:
+                ├── 1. Streamlit Interactive Dashboard (streamlit_app.py)
+                └── 2. R Statistical Pipeline & Models (techx_data_analysis.R)
 ```
 
-Visit `http://localhost:3000` in your browser.
+---
+
+## 📁 Repository Structure & File Guide
+
+| File Name | Description |
+| :--- | :--- |
+| **`index.html`** | 🌐 TechX e-commerce website storefront (products, categories, deals, cart, checkout) |
+| **`style.css`** | 🎨 Cyberpunk dark theme stylesheets and responsive animations |
+| **`app.js`** | ⚡ Frontend logic + automated telemetry tracking engine (HEART + 15 UI metrics) |
+| **`Code.gs`** | 📑 Google Apps Script backend that auto-logs sessions to dual Google Sheets |
+| **`streamlit_app.py`** | 📊 Streamlit analytics dashboard (8 tabs, KPI cards, Plotly charts, multi-filters) |
+| **`requirements.txt`** | 📦 Python dependencies for Streamlit Cloud (`streamlit`, `pandas`, `openpyxl`, `plotly`, `numpy`) |
+| **`TechX User Analysis 5000 Users.xlsx`** | 📈 Complete 5,000 synthetic user sessions dataset (User Telemetry & HEART sheets) |
+| **`techx_data_analysis.R`** | 📉 Master R data cleaning, 11 visualization plots, and 4 statistical models |
+| **`TechX_Data_Analysis_Report.Rmd`** | 📄 R Markdown notebook for interactive analysis |
+| **`TechX_Data_Analysis_Report.html`** | 📑 Standalone interactive HTML statistical report |
+| **`run_dashboard.bat`** | ⚡ 1-click Windows launcher for local Streamlit dashboard |
+| **`.gitignore`** | ⚙️ Git configuration |
 
 ---
 
-## 📄 License
+## 🚀 Live Streamlit Dashboard Deployment (Free)
 
-Distributed under the MIT License. See `LICENSE` for more information.
+1. Upload this repository to **GitHub**.
+2. Go to **[share.streamlit.io](https://share.streamlit.io)** and log in with GitHub.
+3. Click **"New App"** $\to$ Select this repository $\to$ Set Main file path to **`streamlit_app.py`**.
+4. Click **"Deploy!"** — Your dashboard is instantly live on the internet.
+
+### Running the Dashboard Locally
+```bash
+pip install -r requirements.txt
+streamlit run streamlit_app.py
+```
+Or double-click `run_dashboard.bat` on Windows. Open `http://localhost:8501`.
+
+---
+
+## 📊 Key Analytical Insights (from 5,000 User Sessions)
+
+- **Total Volume**: 5,000 Unique Users & 5,000 Sessions
+- **Bounce Rate**: 19.98% (999 single-page bounces from Home Page)
+- **Conversion Rate**: 16.00% (800 confirmed buyers, ₹3.47 Cr total revenue, AOV ₹43,403)
+- **Most Visited Page**: Home Page (5,000 visits, 100%), followed by Shop Page (2,168)
+- **Top Exit Pages**: Home Page (999 bounces), Checkout Page (890 abandoned checkouts)
+- **Top Clicked Button**: `Category Filter: Audio` (715 clicks), followed by `Track Order` (527 clicks)
+- **Top Search Queries**: Cinema Camera (145), ANC Earbuds (143), Smart Lamp (136), GaN Charger (133)
+- **Highest Engagement Cohort**: `New User Registered` (Avg 92.3 / 100 Engagement Score)
+- **Best Performing Browser**: `Brave` (18.23% conversion rate, 292s avg duration), followed by `Firefox` (17.48%) and `Chrome` (15.91%, 2,917 sessions)
+- **Most Common Journey**: `Home Page → Shop Page → New Arrivals Page` (287 sessions)
+- **Geographic Metros**: Mumbai (545), Bengaluru (348), New Delhi (296), Pune (196), Hyderabad (193), Ahmedabad (103), Chennai (91), Kolkata (82)
+
+---
+
+## ⚙️ Google Apps Script Integration (`Code.gs`)
+
+1. Open your Google Spreadsheet.
+2. Go to **Extensions** $\to$ **Apps Script**.
+3. Paste the contents of `Code.gs` and update `SPREADSHEET_ID`.
+4. Deploy as **Web App** (Access: *Anyone*).
+5. Copy the Web App URL and set `ANALYTICS_URL` in `app.js`.
