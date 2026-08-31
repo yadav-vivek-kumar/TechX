@@ -11,11 +11,37 @@ const PORT = process.env.PORT || 3000;
 const csvPath = path.join(process.env.ANALYTICS_DIR || path.join(__dirname, 'analytics'), 'techx-analytics.csv');
 fs.mkdirSync(path.dirname(csvPath), { recursive: true });
 
+const CSV_HEADER = [
+  'Time Stamp',
+  'User Id',
+  'Session ID',
+  'Page Visited',
+  'Click Position',
+  'Button Click',
+  'Mouse Hover',
+  'Scroll Depth',
+  'Search Query',
+  'Session Time',
+  'Device',
+  'Browser',
+  'Screen Resolution',
+  'Referrer',
+  'Language',
+  'Purchased Or not',
+  'Purchase Amount',
+  'Returning Customer',
+  'Name',
+  'Email',
+  'Phone number',
+  'Pin code',
+  'Address',
+  'Payment Method',
+  'Theme',
+  'Wish List'
+].join(',') + '\n';
+
 if (!fs.existsSync(csvPath)) {
-  fs.writeFileSync(
-    csvPath,
-    'timestamp,session_id,visitor_id,session_duration_seconds,pages_visited,max_scroll_percent,purchased,returning_visitor\n'
-  );
+  fs.writeFileSync(csvPath, CSV_HEADER);
 }
 
 // MIME types for modern web assets
@@ -59,21 +85,39 @@ const server = http.createServer((req, res) => {
 
       const safe = (v) => `"${String(v ?? '').replaceAll('"', '""')}"`;
       const row = [
-        data.timestamp,
-        data.sessionId,
-        data.visitorId,
-        Number(data.duration || 0),
-        Number(data.pages || 1),
-        Number(data.scroll || 0),
-        Boolean(data.purchased),
-        Boolean(data.returning)
+        data.timestamp || new Date().toISOString(),
+        data.userId || data.visitorId || 'Anonymous',
+        data.sessionId || 'Session-N/A',
+        data.pageVisited || data.pagesVisited || 'Home Page',
+        data.clickPosition || 'None',
+        data.buttonClick || 'None',
+        data.mouseHover || 'None',
+        data.scrollDepth || `${data.scroll || 0}%`,
+        data.searchQuery || 'None',
+        data.sessionTime || `${data.duration || 0}s`,
+        data.device || 'Desktop',
+        data.browser || 'Browser',
+        data.screenResolution || 'N/A',
+        data.referrer || 'Direct',
+        data.language || 'en-US',
+        data.purchased ? 'YES' : 'NO',
+        Number(data.purchaseAmount || 0),
+        data.returningCustomer || (data.returning ? 'Returning' : 'New'),
+        data.name || data.customerName || '',
+        data.email || data.customerEmail || '',
+        data.phone || data.customerNumber || '',
+        data.pincode || data.pinCode || '',
+        data.address || data.streetAddress || '',
+        data.paymentMethod || '',
+        data.theme || 'Dark Mode',
+        data.wishlist || data.wishlisted || ''
       ]
         .map(safe)
         .join(',') + '\n';
 
       fs.appendFileSync(csvPath, row);
       res.writeHead(201, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ saved: true }));
+      res.end(JSON.stringify({ saved: true, timestamp: new Date().toISOString() }));
     });
     return;
   }

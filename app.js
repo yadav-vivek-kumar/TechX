@@ -1016,6 +1016,12 @@ function nav() {
       </nav>
 
       <div class="nav-actions">
+        <!-- Live Telemetry Radar Status Indicator -->
+        <button class="tx-telemetry-badge" onclick="openTelemetryHUD()" title="Live Telemetry HUD — Tracking 15 User Metrics">
+          <span class="radar-dot"></span>
+          <span>LIVE TELEMETRY</span>
+        </button>
+
         <button class="search-trigger-btn" onclick="openSearchModal()" title="Search catalog">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <span>Search gear...</span>
@@ -1104,6 +1110,9 @@ function renderSearchModal() {
 }
 
 function handleModalSearch(val) {
+  if (window.TechXTelemetry && typeof window.TechXTelemetry.recordSearch === 'function') {
+    window.TechXTelemetry.recordSearch(val);
+  }
   const query = val.toLowerCase().trim();
   const resultsBox = document.getElementById('modal-search-results');
   if (!resultsBox) return;
@@ -2429,7 +2438,462 @@ function setPaymentMethod(method) {
   }
 }
 
-// Expose globals for inline event handlers
+// =============================================================================
+// 21. ADVANCED TELEMETRY ENGINE & GOOGLE SPREADSHEET INTEGRATION
+// =============================================================================
+
+const ANALYTICS_URL = 'https://script.google.com/macros/s/AKfycbwmStIqTFyRjoakSGbLmIEBH89HUCLF9tMVdXa1KL6SNOuUf7QlbOlqelsZIAuIeC6O/exec';
+
+const TechXTelemetry = (() => {
+  // 1. Persistent User ID (localStorage)
+  let userId = localStorage.getItem('tx-visitor-id') || localStorage.getItem('tx-visitor');
+  const isReturning = !!userId;
+  if (!userId) {
+    userId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : 'usr_' + Math.random().toString(36).slice(2, 11) + Date.now().toString(36);
+    localStorage.setItem('tx-visitor-id', userId);
+  }
+  localStorage.setItem('tx-visitor', userId);
+
+  // 2. Session ID (sessionStorage - unique per tab/session)
+  let sessionId = sessionStorage.getItem('tx-session-id');
+  if (!sessionId) {
+    sessionId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : 'ses_' + Math.random().toString(36).slice(2, 11) + Date.now().toString(36);
+    sessionStorage.setItem('tx-session-id', sessionId);
+  }
+
+  // Session start time
+  const sessionStartTime = Date.now();
+
+  // In-memory Telemetry State
+  let lastClickCoords = 'None';
+  let lastButtonClicked = 'None';
+  let buttonClickLog = [];
+  let hoverDwellMap = new Map(); // target -> total milliseconds hovered
+  let activeHoverTarget = null;
+  let activeHoverStart = 0;
+  let maxScrollDepth = 0;
+  let lastSearchQuery = 'None';
+  let isHudOpen = false;
+
+  // 11. Device Detection
+  function getDevice() {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+      return 'Tablet';
+    }
+    if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/i.test(ua)) {
+      if (/iPhone/i.test(ua)) return 'Mobile (iPhone iOS)';
+      if (/Android/i.test(ua)) return 'Mobile (Android)';
+      return 'Mobile';
+    }
+    if (/Windows/i.test(ua)) return 'Desktop (Windows)';
+    if (/Macintosh|Mac OS X/i.test(ua)) return 'Desktop (macOS)';
+    if (/Linux/i.test(ua)) return 'Desktop (Linux)';
+    return 'Desktop';
+  }
+
+  // 12. Browser Engine Detection
+  function getBrowser() {
+    const ua = navigator.userAgent;
+    let name = 'Unknown Browser';
+    if (ua.indexOf('Firefox') > -1) {
+      const m = ua.match(/Firefox\/(\d+)/);
+      name = 'Firefox ' + (m ? m[1] : '');
+    } else if (ua.indexOf('SamsungBrowser') > -1) {
+      name = 'Samsung Internet';
+    } else if (ua.indexOf('Opera') > -1 || ua.indexOf('OPR') > -1) {
+      name = 'Opera';
+    } else if (ua.indexOf('Edge') > -1 || ua.indexOf('Edg') > -1) {
+      const m = ua.match(/Edg\/(\d+)/);
+      name = 'Edge ' + (m ? m[1] : '');
+    } else if (ua.indexOf('Chrome') > -1) {
+      const m = ua.match(/Chrome\/(\d+)/);
+      name = 'Chrome ' + (m ? m[1] : '');
+    } else if (ua.indexOf('Safari') > -1) {
+      const m = ua.match(/Version\/(\d+)/);
+      name = 'Safari ' + (m ? m[1] : '');
+    }
+    return name.trim();
+  }
+
+  // 13. Screen Resolution & Viewport
+  function getScreenResolution() {
+    return `${window.screen.width}x${window.screen.height} (Viewport: ${window.innerWidth}x${window.innerHeight})`;
+  }
+
+  // 14. Referrer Source
+  const referrer = document.referrer ? (document.referrer.length > 70 ? document.referrer.slice(0, 70) + '...' : document.referrer) : 'Direct / Internal Navigation';
+
+  // 15. Language Locale
+  const language = navigator.language || (navigator.languages && navigator.languages[0]) || 'en-US';
+
+  // 9. Formatted Timestamp
+  function getFormattedTimestamp() {
+    const pad = n => String(n).padStart(2, '0');
+    const now = new Date();
+    return `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}, ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  }
+
+  // 10. Session Duration
+  function getSessionDuration() {
+    const totalSec = Math.round((Date.now() - sessionStartTime) / 1000);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return { formatted: `${m}m ${s}s`, totalSeconds: totalSec };
+  }
+
+  // 4. Click Position & Target Tracker
+  function recordClick(e) {
+    const x = e.clientX;
+    const y = e.clientY;
+    const pctX = Math.round((x / (window.innerWidth || 1)) * 100);
+    const pctY = Math.round((y / (window.innerHeight || 1)) * 100);
+
+    const btnOrLink = e.target.closest('button, a, input, select, .product-card, .bento-card, .feature-item, .nav-btn, .bag-btn');
+    let targetDesc = '';
+    if (btnOrLink) {
+      const text = btnOrLink.innerText ? btnOrLink.innerText.replace(/\s+/g, ' ').trim().slice(0, 30) : '';
+      const tag = btnOrLink.tagName.toLowerCase();
+      const cls = btnOrLink.className ? `.${btnOrLink.className.split(' ')[0]}` : '';
+      targetDesc = text ? `[${tag}${cls}: "${text}"]` : `[${tag}${cls}]`;
+    } else {
+      targetDesc = `[${e.target.tagName.toLowerCase()}]`;
+    }
+
+    lastClickCoords = `X: ${x}px, Y: ${y}px (${pctX}% x ${pctY}%) on ${targetDesc}`;
+
+    // 5. Button Click Identifier
+    const btnElem = e.target.closest('button, .btn-primary, .btn-secondary, .btn-cyber, .bag-btn, .nav-btn, .search-trigger-btn, .action-btn, a.btn');
+    if (btnElem) {
+      let btnLabel = btnElem.getAttribute('aria-label') || btnElem.getAttribute('title') || btnElem.innerText.replace(/\s+/g, ' ').trim();
+      btnLabel = btnLabel.slice(0, 45) || 'Button Click';
+      lastButtonClicked = btnLabel;
+      buttonClickLog.push({ label: btnLabel, time: getFormattedTimestamp() });
+      if (buttonClickLog.length > 10) buttonClickLog.shift();
+    }
+
+    updateHUD();
+  }
+
+  // 6. Mouse Hover & Dwell Timer
+  function recordHoverStart(e) {
+    const target = e.target.closest('.product-card, .bento-card, .feature-item, .deals-banner, .btn-primary, .brand, .badge, .quickview-btn');
+    if (target) {
+      const name = target.getAttribute('data-hover-name') || target.querySelector('h3, h4, strong')?.innerText || target.innerText?.slice(0, 24) || 'Interactive UI Component';
+      activeHoverTarget = name.replace(/\s+/g, ' ').trim();
+      activeHoverStart = Date.now();
+    }
+  }
+
+  function recordHoverEnd() {
+    if (activeHoverTarget && activeHoverStart) {
+      const dwellMs = Date.now() - activeHoverStart;
+      if (dwellMs > 400) { // Log intentional hovers > 400ms
+        const prev = hoverDwellMap.get(activeHoverTarget) || 0;
+        hoverDwellMap.set(activeHoverTarget, prev + dwellMs);
+      }
+      activeHoverTarget = null;
+      activeHoverStart = 0;
+      updateHUD();
+    }
+  }
+
+  function getHoverSummary() {
+    if (hoverDwellMap.size === 0) return 'None';
+    const sorted = Array.from(hoverDwellMap.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([name, ms]) => `${name} (${(ms / 1000).toFixed(1)}s)`);
+    return sorted.join(', ');
+  }
+
+  // 7. Scroll Depth Tracker
+  function recordScroll() {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const current = h > 0 ? Math.round((window.scrollY / h) * 100) : 100;
+    maxScrollDepth = Math.max(maxScrollDepth, current);
+    state.maxScroll = maxScrollDepth;
+    updateHUD();
+  }
+
+  // 8. Search Query Tracker
+  function recordSearch(query) {
+    if (query && query.trim()) {
+      lastSearchQuery = query.trim();
+      updateHUD();
+    }
+  }
+
+  // Generate Telemetry Payload
+  function getPayload() {
+    const billing = state.lastBillingInfo || {};
+    const wishlistedNames = (state.wish && state.wish.length > 0)
+      ? state.wish.map(id => {
+          const p = products.find(item => item.id === id);
+          return p ? p.name : `Item #${id}`;
+        }).filter(Boolean).join(', ')
+      : 'None';
+
+    const duration = getSessionDuration();
+
+    return {
+      // 15 Specific Metrics Requested
+      timestamp: getFormattedTimestamp(),
+      userId: userId,
+      sessionId: sessionId,
+      pageVisited: Array.from(state.seen).join(' → '),
+      clickPosition: lastClickCoords,
+      buttonClick: lastButtonClicked,
+      mouseHover: getHoverSummary(),
+      scrollDepth: `${maxScrollDepth}%`,
+      searchQuery: lastSearchQuery,
+      sessionTime: duration.formatted,
+      device: getDevice(),
+      browser: getBrowser(),
+      screenResolution: getScreenResolution(),
+      referrer: referrer,
+      language: language,
+
+      // E-commerce Conversion & Order Attributes
+      purchased: state.purchased ? 'YES' : 'NO',
+      purchaseAmount: state.purchaseAmount || 0,
+      returningCustomer: isReturning ? 'Returning' : 'New',
+      name: billing.name || '',
+      email: billing.email || '',
+      phone: billing.phone || '',
+      pincode: billing.pin || '',
+      address: billing.address || '',
+      paymentMethod: billing.payMethod || state.selectedPaymentMethod?.toUpperCase() || '',
+      theme: state.theme === 'dark' ? 'Dark Mode' : 'Light Mode',
+      wishlist: wishlistedNames
+    };
+  }
+
+  // Dispatch Telemetry to Google Apps Script & Local Server
+  function dispatch(force = false) {
+    const payloadData = getPayload();
+    const payloadStr = JSON.stringify(payloadData);
+
+    // 1. Google Sheets Webhook via navigator.sendBeacon
+    let sent = false;
+    if (navigator.sendBeacon) {
+      try {
+        const blob = new Blob([payloadStr], { type: 'text/plain;charset=UTF-8' });
+        sent = navigator.sendBeacon(ANALYTICS_URL, blob);
+      } catch (e) {}
+    }
+
+    // 2. Fetch Fallback with keepalive
+    if (!sent) {
+      try {
+        fetch(ANALYTICS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          keepalive: true,
+          headers: { 'Content-Type': 'text/plain' },
+          body: payloadStr
+        }).catch(() => {});
+      } catch (e) {}
+    }
+
+    // 3. Local Server Endpoint
+    try {
+      fetch('/api/analytics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payloadStr
+      }).catch(() => {});
+    } catch (e) {}
+
+    return payloadData;
+  }
+
+  // Live HUD Renderer
+  function updateHUD() {
+    if (!isHudOpen) return;
+    const portal = document.getElementById('telemetry-hud-portal');
+    if (!portal) return;
+
+    const data = getPayload();
+    portal.innerHTML = `
+      <div class="telemetry-hud-modal" onclick="if(event.target === this) closeTelemetryHUD()">
+        <div class="telemetry-hud-container">
+          <div class="telemetry-hud-header">
+            <div class="telemetry-hud-title">
+              <span class="radar-dot" style="width: 12px; height: 12px;"></span>
+              <span>TechX Live Telemetry Stream</span>
+              <span class="badge badge-new" style="font-size: 10px;">15 METRICS ACTIVE</span>
+            </div>
+            <button class="nav-btn" onclick="closeTelemetryHUD()" style="font-size: 18px;">✕</button>
+          </div>
+
+          <div class="telemetry-grid">
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">👤 User ID (Persistent)</span>
+              <span class="telemetry-val mono">${data.userId}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">🔑 Session ID (Scoped)</span>
+              <span class="telemetry-val mono">${data.sessionId}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">⏱️ Session Time & Duration</span>
+              <span class="telemetry-val" style="color: var(--accent-green); font-weight: 700; font-size: 15px;">${data.sessionTime}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">🛣️ Page Visited / Journey</span>
+              <span class="telemetry-val">${data.pageVisited}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">🎯 Click Position (X, Y & %)</span>
+              <span class="telemetry-val mono">${data.clickPosition}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">🖱️ Button Click Identifier</span>
+              <span class="telemetry-val" style="color: var(--accent-orange);">${data.buttonClick}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">👁️ Mouse Hover Dwell Time</span>
+              <span class="telemetry-val">${data.mouseHover}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">📜 Max Scroll Depth</span>
+              <div style="display: flex; align-items: center; gap: 10px; margin-top: 4px;">
+                <div style="flex-grow: 1; height: 8px; background: var(--bg-primary); border-radius: 4px; overflow: hidden;">
+                  <div style="width: ${data.scrollDepth}; height: 100%; background: var(--grad-glow); transition: width 0.3s ease;"></div>
+                </div>
+                <span class="telemetry-val" style="font-weight: 700;">${data.scrollDepth}</span>
+              </div>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">🔍 Search Query</span>
+              <span class="telemetry-val mono">${data.searchQuery}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">💻 Device & Platform</span>
+              <span class="telemetry-val">${data.device}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">🌐 Browser Engine</span>
+              <span class="telemetry-val">${data.browser}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">🖥️ Screen Resolution</span>
+              <span class="telemetry-val mono">${data.screenResolution}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">🔗 Referrer Source</span>
+              <span class="telemetry-val">${data.referrer}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">🗣️ Browser Language</span>
+              <span class="telemetry-val mono">${data.language}</span>
+            </div>
+
+            <div class="telemetry-metric-card">
+              <span class="telemetry-label">⏰ Current Timestamp</span>
+              <span class="telemetry-val mono">${data.timestamp}</span>
+            </div>
+          </div>
+
+          <div class="telemetry-hud-actions">
+            <div style="font-size: 12px; color: var(--text-tertiary);">
+              ⚡ Telemetry automatically dispatches on interactions, page navigations, and session completion.
+            </div>
+            <button class="btn-primary" style="padding: 8px 18px; font-size: 12px;" onclick="TechXTelemetry.dispatch(); showToast('⚡ Telemetry dispatched to Google Sheets & Server!')">
+              🚀 Force Sync Telemetry Beacon
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function openHUD() {
+    isHudOpen = true;
+    updateHUD();
+  }
+
+  function closeHUD() {
+    isHudOpen = false;
+    const portal = document.getElementById('telemetry-hud-portal');
+    if (portal) portal.innerHTML = '';
+  }
+
+  return {
+    userId,
+    sessionId,
+    recordClick,
+    recordHoverStart,
+    recordHoverEnd,
+    recordScroll,
+    recordSearch,
+    dispatch,
+    getPayload,
+    openHUD,
+    closeHUD
+  };
+})();
+
+// Global Event Listeners for Complete Telemetry Capture
+window.addEventListener('click', (e) => TechXTelemetry.recordClick(e), true);
+window.addEventListener('mouseover', (e) => TechXTelemetry.recordHoverStart(e), true);
+window.addEventListener('mouseout', () => TechXTelemetry.recordHoverEnd(), true);
+window.addEventListener('scroll', () => TechXTelemetry.recordScroll(), { passive: true });
+
+// Lifecycle Listeners
+window.addEventListener('beforeunload', () => TechXTelemetry.dispatch('beforeunload'));
+window.addEventListener('pagehide', () => TechXTelemetry.dispatch('pagehide'));
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') TechXTelemetry.dispatch('visibility_hidden');
+});
+
+// Periodic session ticker & live HUD update
+setInterval(() => {
+  if (TechXTelemetry) {
+    const flashTimer = document.getElementById('flash-deal-timer');
+    if (flashTimer) {
+      const now = new Date();
+      const h = String(23 - now.getHours()).padStart(2, '0');
+      const m = String(59 - now.getMinutes()).padStart(2, '0');
+      const s = String(59 - now.getSeconds()).padStart(2, '0');
+      flashTimer.innerText = `${h}h : ${m}m : ${s}s`;
+    }
+  }
+}, 1000);
+
+// Initial telemetry dispatch (after 3 seconds)
+setTimeout(() => {
+  TechXTelemetry.dispatch('initial_dwell');
+}, 3000);
+
+// Helper functions for global access
+function openTelemetryHUD() {
+  TechXTelemetry.openHUD();
+}
+
+function closeTelemetryHUD() {
+  TechXTelemetry.closeHUD();
+}
+
+function sendAnalytics(force = false) {
+  return TechXTelemetry.dispatch(force ? 'manual' : 'scheduled');
+}
+
+// Expose all functions to global scope
 Object.assign(window, {
   go,
   addToCart,
@@ -2451,133 +2915,12 @@ Object.assign(window, {
   handleLogin,
   logout,
   setCategoryFilter,
-  toggleMobileMenu
+  toggleMobileMenu,
+  openTelemetryHUD,
+  closeTelemetryHUD,
+  sendAnalytics,
+  TechXTelemetry
 });
-
-// =============================================================================
-// 21. GOOGLE SPREADSHEET & ANALYTICS INTEGRATION
-// =============================================================================
-
-const ANALYTICS_URL = 'https://script.google.com/macros/s/AKfycbwmStIqTFyRjoakSGbLmIEBH89HUCLF9tMVdXa1KL6SNOuUf7QlbOlqelsZIAuIeC6O/exec';
-
-const visitor = localStorage.getItem('tx-visitor') || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : 'vis-' + Math.random().toString(36).slice(2));
-const returning = !!localStorage.getItem('tx-visitor');
-localStorage.setItem('tx-visitor', visitor);
-const started = Date.now();
-const sessionId = (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : 'ses-' + Math.random().toString(36).slice(2));
-
-function sendAnalytics(force = false) {
-  const pad = n => String(n).padStart(2, '0');
-  const now = new Date();
-  const formattedDate = `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}, ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-
-  const durationSec = Math.round((Date.now() - started) / 1000);
-  const minutes = Math.floor(durationSec / 60);
-  const seconds = durationSec % 60;
-  const durationFormatted = `${minutes}m ${seconds}s`;
-
-  const billing = state.lastBillingInfo || {};
-  const wishlistedNames = (state.wish && state.wish.length > 0)
-    ? state.wish.map(id => {
-        const p = products.find(item => item.id === id);
-        return p ? p.name : `Item #${id}`;
-      }).filter(Boolean).join(', ')
-    : 'None';
-
-  const data = {
-    // 1. Time & Identifiers
-    timestamp: formattedDate,
-    userId: visitor,
-    sessionId: sessionId,
-    
-    // 2. Engagement (Readable format only)
-    sessionDuration: durationFormatted,
-    pagesVisited: Array.from(state.seen).join(' → '),
-    scrollPercentage: `${state.maxScroll || 0}%`,
-    
-    // 3. Purchase & Returning Status
-    purchased: state.purchased ? 'YES' : 'NO',
-    purchaseAmount: state.purchaseAmount || 0,
-    returningVisitor: returning ? 'Returning' : 'New',
-    
-    // 4. Split Billing Details
-    customerName: billing.name || '',
-    customerEmail: billing.email || '',
-    customerNumber: billing.phone || '',
-    pinCode: billing.pin || '',
-    streetAddress: billing.address || '',
-    paymentMethod: billing.payMethod || '',
-    
-    // 5. User Preferences & Wishlist
-    theme: state.theme === 'dark' ? 'Dark Mode' : 'Light Mode',
-    wishlisted: wishlistedNames
-  };
-
-  const payload = JSON.stringify(data);
-
-  // 1. Google Spreadsheet Webhook via navigator.sendBeacon (Guaranteed on close/unload)
-  let sent = false;
-  if (navigator.sendBeacon) {
-    try {
-      const blob = new Blob([payload], { type: 'text/plain;charset=UTF-8' });
-      sent = navigator.sendBeacon(ANALYTICS_URL, blob);
-    } catch (e) {}
-  }
-
-  // 2. Fallback fetch with keepalive
-  if (!sent) {
-    try {
-      fetch(ANALYTICS_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        keepalive: true,
-        headers: { 'Content-Type': 'text/plain' },
-        body: payload
-      }).catch(() => {});
-    } catch (e) {}
-  }
-
-  // 3. Local Node server endpoint (if running server.js)
-  try {
-    fetch('/api/analytics', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: payload
-    }).catch(() => {});
-  } catch (e) {}
-}
-
-// Lifecycle listeners for reliable data transmission
-window.addEventListener('beforeunload', () => sendAnalytics(false));
-window.addEventListener('pagehide', () => sendAnalytics(false));
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') sendAnalytics(false);
-});
-
-// Initial visit log (after 3 seconds) so live visits register without needing tab close
-setTimeout(() => {
-  sendAnalytics(false);
-}, 3000);
-
-window.addEventListener('scroll', () => {
-  const h = document.documentElement.scrollHeight - window.innerHeight;
-  state.maxScroll = Math.max(state.maxScroll || 0, h > 0 ? Math.round((window.scrollY / h) * 100) : 100);
-});
-
-// Flash deal ticking simulator
-setInterval(() => {
-  const timer = document.getElementById('flash-deal-timer');
-  if (timer) {
-    const now = new Date();
-    const h = String(23 - now.getHours()).padStart(2, '0');
-    const m = String(59 - now.getMinutes()).padStart(2, '0');
-    const s = String(59 - now.getSeconds()).padStart(2, '0');
-    timer.innerText = `${h}h : ${m}m : ${s}s`;
-  }
-}, 1000);
-
-// Expose sendAnalytics globally
-Object.assign(window, { sendAnalytics });
 
 // Initialize application
 page();

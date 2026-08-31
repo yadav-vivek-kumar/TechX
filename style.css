@@ -3,41 +3,48 @@
    ========================================================================== */
 
 :root {
-  /* Dark Theme (Default) */
-  --bg-primary: #090d16;
-  --bg-secondary: #0f172a;
-  --bg-card: rgba(18, 24, 39, 0.78);
-  --bg-card-hover: rgba(30, 41, 59, 0.85);
-  --bg-glass: rgba(15, 23, 42, 0.72);
-  --bg-glass-strong: rgba(11, 15, 25, 0.92);
-  --bg-input: rgba(15, 23, 42, 0.9);
+  /* Dark Theme (Default) - Cyber Obsidian Aesthetic */
+  --bg-primary: #070a13;
+  --bg-secondary: #0d121f;
+  --bg-card: rgba(15, 23, 42, 0.75);
+  --bg-card-hover: rgba(26, 38, 66, 0.88);
+  --bg-glass: rgba(11, 17, 32, 0.78);
+  --bg-glass-strong: rgba(7, 11, 22, 0.94);
+  --bg-input: rgba(13, 19, 36, 0.92);
   
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-medium: rgba(255, 255, 255, 0.15);
-  --border-glow: rgba(255, 87, 34, 0.4);
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --border-medium: rgba(255, 255, 255, 0.16);
+  --border-glow: rgba(255, 94, 31, 0.45);
+  --border-cyan-glow: rgba(0, 242, 254, 0.45);
 
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-tertiary: #64748b;
-  --text-inverse: #090d16;
+  --text-inverse: #070a13;
 
   --accent-orange: #ff5e1f;
-  --accent-orange-glow: rgba(255, 94, 31, 0.28);
+  --accent-orange-glow: rgba(255, 94, 31, 0.35);
   --accent-orange-dark: #e04a0e;
-  --accent-cyan: #00e5ff;
-  --accent-cyan-glow: rgba(0, 229, 255, 0.25);
+  --accent-cyan: #00f2fe;
+  --accent-cyan-glow: rgba(0, 242, 254, 0.32);
   --accent-purple: #8b5cf6;
+  --accent-purple-glow: rgba(139, 92, 246, 0.3);
   --accent-green: #10b981;
+  --accent-green-glow: rgba(16, 185, 129, 0.3);
+  --accent-pink: #ff2a85;
 
-  --grad-hero: radial-gradient(circle at 75% 25%, rgba(255, 94, 31, 0.18) 0%, rgba(139, 92, 246, 0.08) 40%, rgba(9, 13, 22, 0) 70%);
-  --grad-glow: linear-gradient(135deg, #ff5e1f 0%, #ff8a00 100%);
-  --grad-cyber: linear-gradient(135deg, #00e5ff 0%, #8b5cf6 100%);
-  --grad-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+  --grad-hero: radial-gradient(circle at 75% 25%, rgba(255, 94, 31, 0.22) 0%, rgba(139, 92, 246, 0.12) 35%, rgba(0, 242, 254, 0.06) 60%, rgba(7, 10, 19, 0) 80%);
+  --grad-glow: linear-gradient(135deg, #ff5e1f 0%, #ff8a00 50%, #ffaa00 100%);
+  --grad-cyber: linear-gradient(135deg, #00f2fe 0%, #4facfe 40%, #8b5cf6 100%);
+  --grad-aurora: linear-gradient(135deg, #10b981 0%, #00e5ff 100%);
+  --grad-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+  --grad-card-border: linear-gradient(135deg, rgba(255, 94, 31, 0.5), rgba(0, 242, 254, 0.3), rgba(139, 92, 246, 0.4));
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 20px 40px -8px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 45px -8px rgba(0, 0, 0, 0.7);
   --shadow-glow: 0 0 35px var(--accent-orange-glow);
+  --shadow-cyan-glow: 0 0 35px var(--accent-cyan-glow);
 
   --radius-xs: 6px;
   --radius-sm: 10px;
@@ -51,30 +58,33 @@
 }
 
 [data-theme="light"] {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #f1f5f9;
-  --bg-card: rgba(255, 255, 255, 0.85);
-  --bg-card-hover: rgba(255, 255, 255, 0.98);
-  --bg-glass: rgba(255, 255, 255, 0.75);
-  --bg-glass-strong: rgba(255, 255, 255, 0.95);
+  --bg-primary: #f1f5f9;
+  --bg-secondary: #e2e8f0;
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --bg-card-hover: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --bg-glass-strong: rgba(255, 255, 255, 0.98);
   --bg-input: #ffffff;
 
-  --border-subtle: rgba(0, 0, 0, 0.08);
-  --border-medium: rgba(0, 0, 0, 0.14);
-  --border-glow: rgba(255, 87, 34, 0.3);
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-medium: rgba(15, 23, 42, 0.15);
+  --border-glow: rgba(255, 87, 34, 0.35);
+  --border-cyan-glow: rgba(0, 180, 216, 0.35);
 
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-tertiary: #94a3b8;
+  --text-primary: #090d16;
+  --text-secondary: #334155;
+  --text-tertiary: #64748b;
   --text-inverse: #ffffff;
 
-  --grad-hero: radial-gradient(circle at 75% 25%, rgba(255, 94, 31, 0.12) 0%, rgba(0, 229, 255, 0.06) 40%, rgba(248, 250, 252, 0) 70%);
+  --grad-hero: radial-gradient(circle at 75% 25%, rgba(255, 94, 31, 0.14) 0%, rgba(0, 229, 255, 0.08) 40%, rgba(241, 245, 249, 0) 70%);
   --grad-surface: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0) 100%);
+  --grad-card-border: linear-gradient(135deg, rgba(255, 94, 31, 0.4), rgba(0, 180, 216, 0.3), rgba(139, 92, 246, 0.3));
 
-  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 10px 30px -4px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 25px 50px -12px rgba(15, 23, 42, 0.12);
-  --shadow-glow: 0 0 30px rgba(255, 94, 31, 0.15);
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 10px 30px -4px rgba(15, 23, 42, 0.1);
+  --shadow-lg: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
+  --shadow-glow: 0 0 30px rgba(255, 94, 31, 0.2);
+  --shadow-cyan-glow: 0 0 30px rgba(0, 180, 216, 0.2);
 }
 
 /* ==========================================================================
@@ -1765,3 +1775,226 @@ footer {
   .form-row { grid-template-columns: 1fr; }
   .newsletter-form { flex-direction: column; }
 }
+
+/* ==========================================================================
+   Ambient Dynamic Background Glows
+   ========================================================================== */
+
+.tx-ambient-glow {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+  animation: ambientFloat 14s ease-in-out infinite alternate;
+}
+
+.tx-ambient-glow-1 {
+  width: 550px;
+  height: 550px;
+  top: -100px;
+  right: -100px;
+  background: radial-gradient(circle, rgba(255, 94, 31, 0.22) 0%, rgba(255, 138, 0, 0.08) 60%, transparent 80%);
+}
+
+.tx-ambient-glow-2 {
+  width: 650px;
+  height: 650px;
+  bottom: 10%;
+  left: -200px;
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.18) 0%, rgba(139, 92, 246, 0.08) 60%, transparent 80%);
+  animation-duration: 18s;
+}
+
+.tx-ambient-glow-3 {
+  width: 450px;
+  height: 450px;
+  top: 45%;
+  right: 15%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.14) 0%, rgba(255, 42, 133, 0.06) 60%, transparent 80%);
+  animation-duration: 22s;
+}
+
+@keyframes ambientFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, 40px) scale(1.08); }
+  100% { transform: translate(-25px, -30px) scale(0.95); }
+}
+
+/* ==========================================================================
+   Interactive Live Telemetry Badge & Radar Pulse
+   ========================================================================== */
+
+.tx-telemetry-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: var(--accent-green);
+  font: 700 11px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  text-decoration: none;
+}
+
+.tx-telemetry-badge:hover {
+  background: rgba(16, 185, 129, 0.22);
+  border-color: var(--accent-green);
+  box-shadow: 0 0 16px var(--accent-green-glow);
+  transform: translateY(-1px);
+}
+
+.radar-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 10px var(--accent-green);
+  position: relative;
+  display: inline-block;
+}
+
+.radar-dot::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent-green);
+  animation: radarWave 1.8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes radarWave {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ==========================================================================
+   Live Telemetry HUD Modal (Cyber Dashboard)
+   ========================================================================== */
+
+.telemetry-hud-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 7, 15, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 5000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: modalFadeIn 0.25s var(--ease-spring);
+}
+
+.telemetry-hud-container {
+  width: 100%;
+  max-width: 960px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--bg-glass-strong);
+  border: 1px solid var(--border-medium);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 242, 254, 0.15);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.telemetry-hud-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-medium);
+  padding-bottom: 16px;
+}
+
+.telemetry-hud-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.telemetry-metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.telemetry-metric-card:hover {
+  border-color: var(--accent-cyan);
+  background: var(--bg-card-hover);
+  box-shadow: 0 4px 20px rgba(0, 242, 254, 0.1);
+}
+
+.telemetry-label {
+  font: 700 11px 'DM Mono', monospace;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.telemetry-val {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  word-break: break-all;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.telemetry-val.mono {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--accent-orange);
+}
+
+.telemetry-hud-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 16px;
+}
+
+/* 3D Dynamic Hover on Product Cards */
+.product-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 94, 31, 0.4);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 94, 31, 0.18);
+}
+

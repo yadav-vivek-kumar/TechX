@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Local logs & analytics storage
+analytics/
+*.log
+
+# Python cache & virtual environments
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# OS metadata
+.DS_Store
+Thumbs.db
