@@ -1210,6 +1210,8 @@ function productCard(p) {
 // =============================================================================
 
 function renderHomePage() {
+  return renderFriendlyHomePage();
+
   const featured = products.slice(0, 8);
 
   return `
@@ -1588,6 +1590,66 @@ function handleNewsletterSubmit(e) {
 function setCategoryFilter(category) {
   state.activeCategory = category;
   page();
+}
+
+function renderFriendlyHomePage() {
+  const heroProduct = products[0];
+  const favourites = [products[0], products[2], products[10], products[13]];
+  const dealCount = products.filter(isOnDeal).length;
+
+  return `
+    <section class="friendly-hero">
+      <div class="friendly-hero-copy">
+        <div class="friendly-kicker"><span></span> THOUGHTFULLY CURATED TECH</div>
+        <h1>Good tech should<br><em>feel easy.</em></h1>
+        <p>Discover dependable gear for work, play and everything in between. Chosen for the way you actually live—not just the specs.</p>
+        <div class="friendly-hero-actions">
+          <a href="#/shop" class="friendly-primary">Shop all products <span>→</span></a>
+          <a href="#/categories" class="friendly-text-link">Browse by category</a>
+        </div>
+        <div class="friendly-hero-proof">
+          <div><strong>4.9/5</strong><span>customer rating</span></div>
+          <div><strong>2 year</strong><span>easy warranty</span></div>
+          <div><strong>24–48 hr</strong><span>metro delivery</span></div>
+        </div>
+      </div>
+      <div class="friendly-feature-card">
+        <div class="feature-card-top"><span>THE DAILY ESSENTIAL</span><span>01 / 04</span></div>
+        <img src="${heroProduct.image}" alt="${heroProduct.name}" referrerpolicy="no-referrer" />
+        <div class="feature-card-bottom">
+          <div><p>${heroProduct.category}</p><h2>${heroProduct.name}</h2><span class="feature-price">${formatRupee(heroProduct.price)}</span></div>
+          <button onclick="openQuickView(${heroProduct.id})" aria-label="View ${heroProduct.name}">↗</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="friendly-benefits" aria-label="Shopping benefits">
+      <div><span>✦</span><p><strong>Carefully selected</strong>Only gear we’d recommend</p></div>
+      <div><span>↗</span><p><strong>Fast, tracked delivery</strong>Across India</p></div>
+      <div><span>♡</span><p><strong>Easy 14-day returns</strong>Simple, no-fuss support</p></div>
+    </section>
+
+    <section class="friendly-section friendly-categories">
+      <div class="friendly-section-heading"><div><p class="friendly-label">SHOP YOUR WAY</p><h2>Start with what you need.</h2></div><a href="#/categories">See all categories →</a></div>
+      <div class="friendly-category-list">
+        ${categories.map(category => {
+          const meta = categoryMeta[category];
+          const count = products.filter(product => product.category === category).length;
+          return `<a href="#${categorySlug(category)}" class="friendly-category"><span class="friendly-category-icon">${meta.icon}</span><span><strong>${category}</strong><small>${count} products</small></span><b>→</b></a>`;
+        }).join('')}
+      </div>
+    </section>
+
+    <section class="friendly-section friendly-picks">
+      <div class="friendly-section-heading"><div><p class="friendly-label">A FEW GOOD PICKS</p><h2>Popular right now.</h2></div><a href="#/shop">Shop the collection →</a></div>
+      <div class="friendly-picks-grid">${favourites.map(productCard).join('')}</div>
+    </section>
+
+    <section class="friendly-deal-banner">
+      <div><p class="friendly-label">LIVE PRICE DROPS</p><h2>A little better for your budget.</h2><p>Explore ${dealCount} handpicked offers on the gear people are loving right now.</p></div>
+      <a href="#/deals" class="friendly-light-button">View all deals <span>→</span></a>
+    </section>
+  `;
 }
 
 function categoryCard(category) {
