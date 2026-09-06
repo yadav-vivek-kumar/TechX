@@ -2482,9 +2482,9 @@ function footer() {
         <div class="footer-col">
           <h4>Location</h4>
           <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px;">
-            Wilson College Campus Area,<br>
-            Chowpatty, Mumbai,<br>
-            Maharashtra 400007, India
+            Finx Institute,<br>
+            CST, Mumbai,<br>
+            Maharashtra 40001, India
           </p>
           <span style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent-green);">● Active Support 9 AM - 9 PM</span>
         </div>
