@@ -58,8 +58,8 @@
 }
 
 [data-theme="light"] {
-  --bg-primary: #f8f7f3;
-  --bg-secondary: #f0eee7;
+  --bg-primary: #f6f7ff;
+  --bg-secondary: #eef0ff;
   --bg-card: rgba(255, 255, 255, 0.92);
   --bg-card-hover: #ffffff;
   --bg-glass: rgba(248, 247, 243, 0.88);
@@ -71,18 +71,18 @@
   --border-glow: rgba(255, 87, 34, 0.35);
   --border-cyan-glow: rgba(0, 180, 216, 0.35);
 
-  --text-primary: #24302b;
-  --text-secondary: #5f6c65;
-  --text-tertiary: #7b8780;
+  --text-primary: #18203b;
+  --text-secondary: #5d6680;
+  --text-tertiary: #8991a8;
   --text-inverse: #ffffff;
 
-  --grad-hero: radial-gradient(circle at 78% 20%, rgba(255, 183, 77, 0.22) 0%, rgba(172, 216, 197, 0.23) 34%, rgba(248, 247, 243, 0) 69%);
+  --grad-hero: radial-gradient(circle at 78% 20%, rgba(109, 93, 252, .20) 0%, rgba(90, 179, 255, .15) 34%, rgba(246, 247, 255, 0) 70%);
   --grad-surface: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0) 100%);
   --grad-card-border: linear-gradient(135deg, rgba(255, 94, 31, 0.4), rgba(0, 180, 216, 0.3), rgba(139, 92, 246, 0.3));
 
-  --shadow-sm: 0 3px 12px rgba(50, 65, 56, 0.06);
-  --shadow-md: 0 14px 32px -10px rgba(50, 65, 56, 0.14);
-  --shadow-lg: 0 25px 50px -15px rgba(50, 65, 56, 0.18);
+  --shadow-sm: 0 3px 12px rgba(44, 58, 128, .08);
+  --shadow-md: 0 14px 32px -10px rgba(44, 58, 128, .16);
+  --shadow-lg: 0 25px 50px -15px rgba(44, 58, 128, .20);
   --shadow-glow: 0 0 30px rgba(255, 94, 31, 0.2);
   --shadow-cyan-glow: 0 0 30px rgba(0, 180, 216, 0.2);
 }
@@ -2107,6 +2107,44 @@ nav.main-nav a.active::after { height: 3px; border-radius: 99px; box-shadow: non
 
 @media (max-width: 900px) { .friendly-hero { grid-template-columns: 1fr; padding-top: 56px; } .friendly-feature-card { max-width: 580px; width: 100%; margin: 0 auto; } .friendly-category-list { grid-template-columns: repeat(2, 1fr); } .friendly-picks-grid { grid-template-columns: repeat(2, 1fr); } .friendly-benefits { margin: 0 5vw; } }
 @media (max-width: 560px) { .friendly-hero { padding: 48px 6vw; } .friendly-hero h1 { font-size: 52px; } .friendly-hero-proof { gap: 14px; } .friendly-hero-proof strong { font-size: 13px; } .friendly-feature-card { min-height: 440px; } .friendly-feature-card img { height: 285px; } .friendly-benefits { grid-template-columns: 1fr; gap: 14px; border: 0; } .friendly-benefits > div { padding: 0; border: 0; } .friendly-section { padding: 68px 6vw 0; } .friendly-section-heading { align-items: flex-start; flex-direction: column; } .friendly-category-list, .friendly-picks-grid { grid-template-columns: 1fr; } .friendly-deal-banner { margin: 56px 6vw; padding: 36px 27px; align-items: flex-start; flex-direction: column; } }
+
+/* Premium blue-violet color story */
+[data-theme="light"] .tx-ambient-glow-1 { background: radial-gradient(circle, rgba(107, 95, 255, .25), transparent 68%); }
+[data-theme="light"] .tx-ambient-glow-2 { background: radial-gradient(circle, rgba(65, 163, 255, .19), transparent 68%); }
+.friendly-kicker, .friendly-label { color: #5e54d9; }
+.friendly-kicker span { background: #705cf7; box-shadow: 0 0 0 5px rgba(112, 92, 247, .1); }
+.friendly-hero h1 { color: #18213f; }
+.friendly-hero h1 em { color: #6558e9; }
+.friendly-hero-copy > p { color: #626c87; }
+.friendly-primary { background: #25205d; border-radius: 16px; box-shadow: 0 12px 24px -16px rgba(50, 39, 141, .7); }
+.friendly-primary span { background: linear-gradient(135deg, #745dff, #a061ff); }
+.friendly-primary:hover { background: #382e83; }
+.friendly-text-link { color: #403a83; border-color: #b9b6e9; }
+.friendly-hero-proof { border-color: rgba(53, 53, 115, .14); }
+.friendly-hero-proof strong { color: #2c3561; }
+.friendly-hero-proof span { color: #858ca7; }
+.friendly-feature-card { padding: 15px; border-radius: 34px; background: linear-gradient(150deg, #4c3fe0 0%, #7468f5 45%, #b182ff 100%); box-shadow: 0 32px 64px -25px rgba(70, 55, 180, .55); transform: rotate(1.1deg); }
+.friendly-feature-card::before { border-color: rgba(255,255,255,.35); border-radius: 27px; }
+.feature-card-top { color: rgba(255,255,255,.78); }
+.friendly-feature-card img { border-radius: 22px; mix-blend-mode: normal; filter: saturate(1.08) contrast(1.03); }
+.feature-card-bottom { color: #fff; }
+.feature-card-bottom p { opacity: .72; }
+.feature-card-bottom button { background: #fff; color: #5042db; }
+.feature-card-bottom button:hover { background: #25205d; color: #fff; }
+.friendly-benefits { border-color: rgba(61, 67, 136, .13); }
+.friendly-benefits > div { border-color: rgba(61, 67, 136, .12); }
+.friendly-benefits > div > span { background: #e8e8ff; color: #6558e9; }
+.friendly-benefits strong, .friendly-section-heading h2 { color: #28315b; }
+.friendly-category { border-color: #dedff5; background: rgba(255,255,255,.82); border-radius: 19px; }
+.friendly-category:hover { border-color: #b9b5f0; box-shadow: 0 18px 28px -23px rgba(71, 62, 183, .7); }
+.friendly-category-icon { background: #eeeeff; color: #6558e9; }
+.friendly-category strong { color: #39416e; }
+.friendly-category b { color: #6558e9; }
+.friendly-deal-banner { border-radius: 30px; background: linear-gradient(115deg, #1d1b4e, #362a92 58%, #5346c4); box-shadow: 0 25px 44px -28px rgba(34, 29, 100, .75); }
+.friendly-deal-banner .friendly-label { color: #ada5ff; }
+.friendly-light-button { color: #33287d; border-radius: 15px; }
+.friendly-light-button span { color: #6558e9; }
+.deal-saving { background: #6255e7; }
 
 /* ==========================================================================
    Live Telemetry HUD Modal (Cyber Dashboard)
