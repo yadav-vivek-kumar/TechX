@@ -2448,6 +2448,12 @@ function footer() {
             <p style="color: var(--text-secondary);"><strong style="color: var(--text-primary);">Lead Contact:</strong> Vivek</p>
             <p style="color: var(--text-secondary);"><a href="tel:+919372785040" style="color: var(--accent-orange);">📞 +91 93727 85040</a></p>
             <p style="color: var(--text-secondary);"><a href="mailto:vivekwilsoncollege@gmail.com" style="color: var(--accent-cyan);">✉️ vivekwilsoncollege@gmail.com</a></p>
+            <p style="color: var(--text-secondary); margin-top: 12px;"><strong style="color: var(--text-primary);">Kalpesh</strong></p>
+            <p style="color: var(--text-secondary);"><a href="tel:+919136517804" style="color: var(--accent-orange);">📞 +91 91365 17804</a></p>
+            <p style="color: var(--text-secondary);"><a href="mailto:kalpeshaldar5959@gmail.com" style="color: var(--accent-cyan);">✉️ kalpeshaldar5959@gmail.com</a></p>
+            <p style="color: var(--text-secondary); margin-top: 12px;"><strong style="color: var(--text-primary);">Ronit</strong></p>
+            <p style="color: var(--text-secondary);"><a href="tel:+917448236123" style="color: var(--accent-orange);">📞 +91 74482 36123</a></p>
+            <p style="color: var(--text-secondary);"><a href="mailto:ronitjagtap2007@gmail.com" style="color: var(--accent-cyan);">✉️ ronitjagtap2007@gmail.com</a></p>
           </div>
         </div>
 
