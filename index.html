@@ -35,7 +35,7 @@
     <!-- Theme initial load script to avoid flash of light/dark -->
     <script>
       (function() {
-        const savedTheme = localStorage.getItem('tx-theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        const savedTheme = localStorage.getItem('tx-theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
       })();
     </script>

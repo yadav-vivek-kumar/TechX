@@ -545,6 +545,25 @@ const COUPONS = {
   'FREESHIP': { discountPercent: 5, description: '5% Express Discount' }
 };
 
+// Keep promotional merchandising intentional. A crossed-out price alone is not
+// enough to place a product in the Deals destination: it must be curated here.
+const DEAL_PRODUCT_IDS = new Set([0, 1, 3, 6, 8, 10, 13, 14, 18, 21]);
+
+const categoryMeta = {
+  'Audio': { icon: '◌', label: 'Immersive sound', description: 'Headphones, speakers and lossless listening.', imageId: 0 },
+  'Computers': { icon: '⌘', label: 'Built to create', description: 'Performance laptops, displays and tablets.', imageId: 2 },
+  'Wearables': { icon: '◷', label: 'Move smarter', description: 'Health, fitness and everyday essentials.', imageId: 1 },
+  'Cameras': { icon: '◉', label: 'Capture more', description: 'Cinema cameras and aerial perspectives.', imageId: 3 },
+  'Smart Home': { icon: '⌂', label: 'Thoughtful living', description: 'Connected lighting and home control.', imageId: 5 },
+  'Accessories': { icon: '✦', label: 'The finishing kit', description: 'Power, desks and carry essentials.', imageId: 4 },
+  'Gaming': { icon: '△', label: 'Play at speed', description: 'Responsive gear for competitive play.', imageId: 6 }
+};
+
+const categories = Object.keys(categoryMeta);
+const categorySlug = (category) => `/${category.toLowerCase().replace(' ', '-')}`;
+const isOnDeal = (product) => DEAL_PRODUCT_IDS.has(product.id) && product.originalPrice > product.price;
+const discountPercent = (product) => Math.round((1 - product.price / product.originalPrice) * 100);
+
 // =============================================================================
 // 2. APPLICATION STATE & ROUTING
 // =============================================================================
@@ -558,6 +577,7 @@ const getPageName = (path) => {
   const map = {
     '/': 'Home Page',
     '/shop': 'Shop Page',
+    '/categories': 'Category Directory',
     '/audio': 'Audio Page',
     '/computers': 'Computers Page',
     '/wearables': 'Wearables Page',
@@ -581,7 +601,7 @@ const getPageName = (path) => {
 const state = {
   cart: JSON.parse(localStorage.getItem('tx-cart') || '[]'),
   wish: JSON.parse(localStorage.getItem('tx-wish') || '[]'),
-  theme: localStorage.getItem('tx-theme') || 'dark',
+  theme: localStorage.getItem('tx-theme') || 'light',
   appliedCoupon: JSON.parse(localStorage.getItem('tx-coupon') || 'null'),
   activeCategory: 'all',
   searchQuery: '',
@@ -1009,10 +1029,8 @@ function nav() {
       <nav class="main-nav">
         <a href="#/" class="${currentPath === '/' ? 'active' : ''}">Home</a>
         <a href="#/shop" class="${currentPath === '/shop' ? 'active' : ''}">Shop</a>
-        <a href="#/new-arrivals" class="${currentPath === '/new-arrivals' ? 'active' : ''}">New Arrivals</a>
+        <a href="#/categories" class="${currentPath === '/categories' || categories.some(category => currentPath === categorySlug(category)) ? 'active' : ''}">Categories</a>
         <a href="#/deals" class="${currentPath === '/deals' ? 'active' : ''}">Deals</a>
-        <a href="#/track-order" class="${currentPath === '/track-order' ? 'active' : ''}">Track</a>
-        <a href="#/about" class="${currentPath === '/about' ? 'active' : ''}">About</a>
       </nav>
 
       <div class="nav-actions">
@@ -1143,11 +1161,13 @@ function handleModalSearch(val) {
 
 function productCard(p) {
   const isSaved = state.wish.includes(p.id);
+  const hasDeal = isOnDeal(p);
 
   return `
     <article class="product-card" data-id="${p.id}">
       <div class="card-badges">
         ${p.badge ? `<span class="badge ${p.badge.includes('OFF') || p.badge.includes('SALE') ? 'badge-deal' : p.badge === 'NEW' ? 'badge-new' : 'badge-featured'}">${p.badge}</span>` : ''}
+        ${hasDeal ? `<span class="deal-saving">Save ${discountPercent(p)}%</span>` : ''}
       </div>
 
       <button class="wishlist-heart-btn ${isSaved ? 'active' : ''}" onclick="toggleWishlist(${p.id})" title="${isSaved ? 'Remove from wishlist' : 'Save to wishlist'}">
@@ -1172,7 +1192,7 @@ function productCard(p) {
 
         <div class="card-price-row">
           <span class="current-price">${formatRupee(p.price)}</span>
-          <span class="original-price">${formatRupee(p.originalPrice)}</span>
+          ${hasDeal ? `<span class="original-price">${formatRupee(p.originalPrice)}</span>` : ''}
         </div>
 
         <div class="card-actions">
@@ -1200,20 +1220,20 @@ function renderHomePage() {
         <div class="hero-content">
           <div class="hero-pill">
             <span class="live-dot"></span>
-            <span>⚡ WELCOME TO TECHX STOREFRONT</span>
+            <span>SMART TECH, SIMPLIFIED</span>
           </div>
           <h1>
-            Welcome to the future of <span class="gradient-text">precision hardware</span>.
+            Find tech you’ll <span class="gradient-text">love to use.</span>
           </h1>
           <p class="sub">
-            Discover an elite ecosystem of high-performance computing, aerospace titanium wearables, studio acoustics, 4K cinema optics, and creator gear engineered for speed and precision.
+            Thoughtfully chosen everyday tech—from better sound and smarter homes to gear that makes work and play feel effortless.
           </p>
           <div class="hero-actions">
             <button class="btn-primary" onclick="go('/shop')">
-              Explore All Hardware &rarr;
+              Shop the collection &rarr;
             </button>
             <button class="btn-secondary" onclick="go('/deals')">
-              ⚡ View Deals & Offers
+              View today’s deals
             </button>
           </div>
           <div class="hero-stats">
@@ -1323,7 +1343,7 @@ function renderHomePage() {
           <div class="eyebrow">CURATED VERTICALS</div>
           <h2>Designed by Category</h2>
         </div>
-        <a href="#/shop" class="explore-link" style="font-size: 13px; font-weight: 700; color: var(--accent-orange);">Browse All Hardware (${products.length}) &rarr;</a>
+        <a href="#/categories" class="explore-link" style="font-size: 13px; font-weight: 700; color: var(--accent-orange);">View all ${categories.length} categories &rarr;</a>
       </div>
 
       <div class="bento-grid">
@@ -1570,9 +1590,49 @@ function setCategoryFilter(category) {
   page();
 }
 
+function categoryCard(category) {
+  const meta = categoryMeta[category];
+  const items = products.filter(product => product.category === category);
+  const dealCount = items.filter(isOnDeal).length;
+  const image = products.find(product => product.id === meta.imageId)?.image;
+
+  return `
+    <a class="category-card" href="#${categorySlug(category)}" aria-label="Shop ${category}">
+      <img src="${image}" alt="${category}" loading="lazy" referrerpolicy="no-referrer" />
+      <div class="category-card-shade"></div>
+      <div class="category-card-content">
+        <span class="category-icon">${meta.icon}</span>
+        <div>
+          <p>${meta.label}</p>
+          <h3>${category}</h3>
+        </div>
+        <span class="category-card-count">${items.length} items${dealCount ? ` · ${dealCount} deals` : ''} <b>→</b></span>
+      </div>
+    </a>
+  `;
+}
+
+function renderCategoriesPage() {
+  return `
+    <section class="category-directory">
+      <div class="directory-intro">
+        <div>
+          <div class="eyebrow">SHOP BY INTENT</div>
+          <h1>Everything, in its <span>right place.</span></h1>
+          <p>Explore a focused collection for every kind of setup—from the desk you build on to the gear you create with.</p>
+        </div>
+        <a href="#/deals" class="directory-deal-link"><span>⚡</span><strong>${products.filter(isOnDeal).length} live deals</strong><small>Handpicked price drops</small></a>
+      </div>
+      <div class="category-directory-grid">
+        ${categories.map(categoryCard).join('')}
+      </div>
+    </section>
+  `;
+}
+
 function renderShopPage(filterCategory = null) {
   const currentCategory = filterCategory || state.activeCategory;
-  const categories = ['all', 'Audio', 'Computers', 'Wearables', 'Cameras', 'Smart Home', 'Accessories', 'Gaming'];
+  const filterCategories = ['all', ...categories];
 
   let filtered = products.filter(p => {
     const matchesCategory = currentCategory === 'all' || p.category.toLowerCase() === currentCategory.toLowerCase();
@@ -1602,7 +1662,7 @@ function renderShopPage(filterCategory = null) {
       <!-- Filter Controls Bar -->
       <div class="filter-bar">
         <div class="category-pills">
-          ${categories.map(c => `
+          ${filterCategories.map(c => `
             <button class="pill-btn ${currentCategory.toLowerCase() === c.toLowerCase() ? 'active' : ''}" onclick="setCategoryFilter('${c}')">
               ${c === 'all' ? 'All Gear' : c}
             </button>
@@ -1648,7 +1708,8 @@ function renderShopPage(filterCategory = null) {
 // =============================================================================
 
 function renderDealsPage() {
-  const deals = products.filter(p => p.originalPrice > p.price);
+  const deals = products.filter(isOnDeal);
+  const totalSavings = deals.reduce((total, product) => total + (product.originalPrice - product.price), 0);
 
   return `
     <section class="catalog-section" style="padding-top: 40px;">
@@ -1656,7 +1717,7 @@ function renderDealsPage() {
         <div>
           <span class="badge badge-deal" style="margin-bottom: 12px;">LIMITED TIME FLASH SAVINGS</span>
           <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 800;">Exclusive Tech Deals</h2>
-          <p style="color: var(--text-secondary); font-size: 14px; margin-top: 6px;">Special price reductions on flagship hardware. All units backed by standard 2-year warranty.</p>
+          <p style="color: var(--text-secondary); font-size: 14px; margin-top: 6px;">Only products with a live TechX price drop are shown here. All units are backed by the standard warranty.</p>
         </div>
         <div style="background: var(--bg-glass-strong); padding: 16px 24px; border-radius: var(--radius-md); border: 1px solid var(--border-medium); font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 700; color: var(--accent-orange); display: flex; align-items: center; gap: 8px;">
           <span>⏳ Ends in:</span>
@@ -1664,9 +1725,13 @@ function renderDealsPage() {
         </div>
       </div>
 
-      <div class="products-grid">
-        ${deals.map(productCard).join('')}
+      <div class="deals-summary">
+        <span><b>${deals.length}</b> verified price drops</span>
+        <span>Save up to <b>${formatRupee(Math.max(...deals.map(product => product.originalPrice - product.price)))}</b></span>
+        <span>Combined savings: <b>${formatRupee(totalSavings)}</b></span>
       </div>
+
+      ${deals.length ? `<div class="products-grid">${deals.map(productCard).join('')}</div>` : `<div class="empty-deals"><span>✦</span><h3>No live deals right now</h3><p>New price drops are added regularly. Browse the full catalog in the meantime.</p><a href="#/shop" class="btn-primary">Explore all gear</a></div>`}
     </section>
   `;
 }
@@ -2385,6 +2450,9 @@ function page() {
   } else if (currentPath === '/shop') {
     document.title = 'TechX — Shop All Precision Hardware';
     mainContent = renderShopPage();
+  } else if (currentPath === '/categories') {
+    document.title = 'TechX — Shop by Category';
+    mainContent = renderCategoriesPage();
   } else if (['/audio', '/computers', '/wearables', '/cameras', '/smart-home', '/accessories', '/gaming'].includes(currentPath)) {
     const cat = currentPath.slice(1).replace('-', ' ');
     const formattedCat = cat.charAt(0).toUpperCase() + cat.slice(1);
